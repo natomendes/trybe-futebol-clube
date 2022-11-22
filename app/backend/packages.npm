@@ -1,0 +1,4 @@
+git-commit-msg-linter -D
+husky@4 -D
+husky -D
+lint-staged -D
