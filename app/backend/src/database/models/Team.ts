@@ -12,19 +12,7 @@ Team.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  role: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
+  teamName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
