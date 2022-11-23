@@ -10,7 +10,7 @@ import { Response } from 'superagent';
 import SignInController from '../presentation/controllers/signin-controller';
 import MissingParamError, { InvalidParamError } from '../presentation/errors';
 import { EmailValidator, FindUser, TokenGenerator } from '../presentation/controllers/signin-protocols';
-import UserModel from '../domain/models/user';
+import { UserModel } from '../domain/models/user';
 
 chai.use(chaiHttp);
 

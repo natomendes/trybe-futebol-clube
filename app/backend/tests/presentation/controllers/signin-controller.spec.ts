@@ -1,15 +1,9 @@
 import SignInController from '../../../src/presentation/controllers/signin-controller'
 import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors'
 import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/signin-protocols'
-import UserModel from '../../../src/domain/models/user'
+import { UserModel } from '../../../src/domain/models/user'
+import UserModelMock from '../../mocks/user-model-mock'
 
-const mockUser = {
-  id: 1,
-  username: 'username',
-  email: 'usermail@mail.com',
-  role: 'admin',
-  password: 'valid_password'
-};
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -24,7 +18,7 @@ const makeFindUser = (): FindUser => {
   class FindUserStub implements FindUser {
     async find(email: string): Promise<UserModel | undefined> {
       return await new Promise(resolves => {
-        resolves(mockUser);
+        resolves(UserModelMock);
       });
     }
   }
@@ -71,7 +65,7 @@ describe('SignIn Controller', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        password: 'valid_password',
+        password: 'hashed_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -79,7 +73,7 @@ describe('SignIn Controller', () => {
     expect(httpResponse.body).toEqual({ message: new MissingParamError().message}); 
   });
 
-  it('Should return an error if no email is provided', async () => {
+  it('Should return an error if no password is provided', async () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
@@ -97,8 +91,8 @@ describe('SignIn Controller', () => {
       .mockReturnValueOnce(false);
     const httpRequest = {
       body: {
-        email: 'any_email@mail.com',
-        password: 'valid_password',
+        email: 'invalid_email@mail.com',
+        password: 'hashed_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -112,8 +106,8 @@ describe('SignIn Controller', () => {
       .mockResolvedValueOnce(undefined)
     const httpRequest = {
       body: {
-        email: 'any_email@mail.com',
-        password: 'valid_password',
+        email: 'no_user@mail.com',
+        password: 'hashed_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -124,10 +118,10 @@ describe('SignIn Controller', () => {
   it('Should return an error if password provided doesnt match user password', async () => {
     const { sut, findUserStub } = makeSut();
     jest.spyOn(findUserStub, 'find')
-      .mockResolvedValueOnce(mockUser)
+      .mockResolvedValueOnce(UserModelMock)
     const httpRequest = {
       body: {
-        email: 'no_user@mail.com',
+        email: 'valid_email@mail.com',
         password: 'invalid_password',
       }
     };
@@ -141,12 +135,12 @@ describe('SignIn Controller', () => {
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
     const httpRequest = {
       body: {
-        email: 'no_user@mail.com',
-        password: 'any_password',
+        email: 'valid_email@mail.com',
+        password: 'hashed_password',
       }
     };
     await sut.handle(httpRequest);
-    expect(isValidSpy).toHaveBeenCalledWith('no_user@mail.com');
+    expect(isValidSpy).toHaveBeenCalledWith('valid_email@mail.com');
   });
 
   it('Should return 500 if EmailValidator throws', async () => {
@@ -158,7 +152,7 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
-        password: 'any_password',
+        password: 'hashed_password',
       }
     }
     const httpResponse = await sut.handle(httpRequest)
@@ -171,7 +165,7 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
-        password: 'valid_password',
+        password: 'hashed_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
