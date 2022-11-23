@@ -1,5 +1,10 @@
-export interface HttpRequest<T> {
-  body?: T
+export type LoginReq = {
+  email?: string,
+  password?: string,
+};
+
+export interface HttpRequest {
+  body?: LoginReq
 }
 export interface HttpResponse {
   statusCode: number

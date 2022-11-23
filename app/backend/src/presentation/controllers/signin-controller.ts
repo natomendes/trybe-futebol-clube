@@ -2,21 +2,16 @@ import FindUser from '../../domain/usecases/find-user';
 import MissingParamError, { InvalidParamError } from '../errors';
 import { badRequest, unauthorized } from '../helpers/http-helpers';
 import EmailValidator from '../protocols/email-validator';
-import { HttpRequest, HttpResponse } from '../protocols/http';
+import { HttpRequest, HttpResponse, LoginReq } from '../protocols/http';
 import Controller from './signin-protocols';
 
-type LoginReq = {
-  email?: string,
-  password?: string,
-};
-
-export default class SignInController implements Controller<LoginReq> {
+export default class SignInController implements Controller {
   constructor(
     private readonly emailValidator: EmailValidator,
     private readonly findUser: FindUser,
   ) {}
 
-  async handle(httpRequest: HttpRequest<LoginReq>): Promise<HttpResponse> {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredFields = ['email', 'password'];
     for (let i = 0; i < requiredFields.length; i += 1) {
       if (!httpRequest.body?.[requiredFields[i] as keyof LoginReq]) {
