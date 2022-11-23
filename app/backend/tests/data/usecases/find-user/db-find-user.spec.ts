@@ -37,7 +37,15 @@ describe('DbFindUser Usecase', () => {
   it('Should call FindUserRepository with correct email', async () => {
     const { sut, findUserRepositoryStub } = makeSut();
     const findSpy = jest.spyOn(findUserRepositoryStub, 'find')
-    await sut.find('no_user@mail.com');
-    expect(findSpy).toHaveBeenCalledWith('no_user@mail.com');
+    await sut.find('valid@mail.com');
+    expect(findSpy).toHaveBeenCalledWith('valid@mail.com');
   });
+
+  it('Should throw if FindUserRepository throws', async () => {
+    const { sut, findUserRepositoryStub } = makeSut();
+    jest.spyOn(findUserRepositoryStub, 'find')
+      .mockRejectedValue(new Error());
+      const promise = sut.find('no_user@mail.com');
+      expect(promise).rejects.toThrow();
+    });
 })
