@@ -28,7 +28,11 @@ export const serverError = (error: Error): HttpResponse => ({
   },
 });
 
-export const ok = <T>(data: T): HttpResponse => ({
+type SignInSuccess = {
+  token: string
+};
+
+export const ok = (data: SignInSuccess): HttpResponse => ({
   statusCode: 200,
   body: data,
 });

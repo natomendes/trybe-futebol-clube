@@ -1,12 +1,5 @@
-import Controller from '../protocols/controller';
-import FindUser from '../../domain/usecases/find-user';
-import EmailValidator from '../protocols/email-validator';
-
-export default Controller;
-
+export * from '../../domain/usecases/find-user';
+export * from '../protocols/email-validator';
+export * from '../protocols/controller';
 export * from '../protocols/http';
-
-export {
-  FindUser,
-  EmailValidator,
-};
+export * from '../protocols/token';

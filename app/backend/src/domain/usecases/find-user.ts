@@ -1,5 +1,5 @@
 import UserModel from '../models/user';
 
-export default interface FindUser {
+export interface FindUser {
   find(email: string): Promise<UserModel | undefined>
 }

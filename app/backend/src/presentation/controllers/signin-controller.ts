@@ -1,16 +1,19 @@
 import MissingParamError, { InvalidParamError, ServerError } from '../errors';
-import { badRequest, serverError, unauthorized } from '../helpers/http-helpers';
-import Controller, {
+import { badRequest, serverError, unauthorized, ok } from '../helpers/http-helpers';
+import {
+  Controller,
   FindUser,
   EmailValidator,
   HttpRequest,
   HttpResponse,
-  LoginReq } from './signin-protocols';
+  LoginReq,
+  TokenGenerator } from './signin-protocols';
 
 export default class SignInController implements Controller {
   constructor(
     private readonly emailValidator: EmailValidator,
     private readonly findUser: FindUser,
+    private readonly tokenGenerator: TokenGenerator,
   ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -28,7 +31,7 @@ export default class SignInController implements Controller {
       if (!user || user.password !== password) {
         return unauthorized(new InvalidParamError());
       }
-      return { statusCode: 200, body: { message: 'ok' } };
+      return ok({ token: this.tokenGenerator.generate(email as string) });
     } catch (error) {
       return serverError(new ServerError());
     }
