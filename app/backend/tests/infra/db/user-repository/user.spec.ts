@@ -1,5 +1,6 @@
-import User from '../../../../src/database/models/User'
-import UserRepository from '../../../../src/infra/db/user-repository/user'
+import User from '../../../../src/database/models/User';
+import UserRepository from '../../../../src/infra/db/user-repository/user';
+import UserModelMock from '../../../mocks/user-model-mock'
 
 const makeSut = (): UserRepository => {
  return new UserRepository();
@@ -19,5 +20,17 @@ describe('UserRepository', () => {
     const findOneSpy = jest.spyOn(User, 'findOne')
     await sut.find('valid_mail@mail.com');
     expect(findOneSpy).toHaveBeenCalledWith({ where: { email: 'valid_mail@mail.com' } });
+  });
+
+  it('Should return an user on success', async () => {
+    const sut = makeSut();
+    jest.spyOn(User, 'findOne')
+      .mockResolvedValueOnce(UserModelMock as User);
+    const user = await sut.find('valid_mail@mail.com');
+    expect(user).toHaveProperty('id');
+    expect(user).toHaveProperty('username');
+    expect(user).toHaveProperty('email');
+    expect(user).toHaveProperty('role');
+    expect(user).toHaveProperty('password');
   });
 });
