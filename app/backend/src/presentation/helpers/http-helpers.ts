@@ -21,6 +21,13 @@ export const notFound = (error: Error): HttpResponse => ({
   },
 });
 
+export const serverError = (error: Error): HttpResponse => ({
+  statusCode: 500,
+  body: {
+    message: error.message,
+  },
+});
+
 export const ok = <T>(data: T): HttpResponse => ({
   statusCode: 200,
   body: data,
