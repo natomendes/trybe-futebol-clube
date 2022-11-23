@@ -21,11 +21,11 @@ export default class SignInController implements Controller {
           return badRequest(new MissingParamError());
         }
       }
-      const { email } = httpRequest.body as LoginReq;
+      const { email, password } = httpRequest.body as LoginReq;
       const isValid = this.emailValidator.isValid(email as string);
       if (!isValid) return badRequest(new InvalidParamError());
       const user = await this.findUser.find(email as string);
-      if (!user) {
+      if (!user || user.password !== password) {
         return unauthorized(new InvalidParamError());
       }
       return { statusCode: 200, body: { message: 'ok' } };
