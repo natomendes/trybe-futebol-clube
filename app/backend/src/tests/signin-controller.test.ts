@@ -10,17 +10,14 @@ import { Response } from 'superagent';
 import SignInController from '../presentation/controllers/signin-controller';
 import MissingParamError, { InvalidParamError } from '../presentation/errors';
 import EmailValidator from '../presentation/protocols/email-validator';
+import FindUser from '../domain/usecases/find-user';
+import UserModel from '../domain/models/user';
 
 chai.use(chaiHttp);
 
 const { app } = new App();
 
 const { expect } = chai;
-
-interface SutTypes {
-  sut: SignInController,
-  emailValidatorStub: EmailValidator
-}
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -31,12 +28,38 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 }
 
+const makeFindUser = (): FindUser => {
+  class FindUserStub implements FindUser {
+    async find(email: string): Promise<UserModel> {
+      return await new Promise(resolves => {
+        resolves({
+        id: 1,
+        username: 'username',
+        email: 'usermail@mail.com',
+        role: 'admin',
+        password: 'hashed_password'
+        });
+      });
+    }
+  }
+
+  return new FindUserStub();
+}
+
+interface SutTypes {
+  sut: SignInController,
+  emailValidatorStub: EmailValidator,
+  findUserStub: FindUser
+}
+
 const makeSut = (): SutTypes => {
+  const findUserStub = makeFindUser();
   const emailValidatorStub = makeEmailValidator();  
-  const sut = new SignInController(emailValidatorStub);
+  const sut = new SignInController(emailValidatorStub, findUserStub);
   return {
     sut,
     emailValidatorStub,
+    findUserStub
   }
 }
 
@@ -114,6 +137,27 @@ describe('Seu teste', () => {
       });
 
     expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body)
+      .to.be.deep.equal({ message: new InvalidParamError().message});
+  });
+
+  it('Should return an error if email provided has no match in the database', async () => {
+    app.post('/no-user-email', async (req, res) => {
+      const { sut, findUserStub } = makeSut();
+      sinon.stub(findUserStub, 'find')
+        .resolves(undefined);
+      const response = await sut.handle(req);
+      res.status(response.statusCode).json(response.body);
+    })
+    chaiHttpResponse = await chai
+       .request(app)
+       .post('/no-user-email')
+       .send({
+        email: 'no_user@mail.com',
+        password: 'any_password',
+      });
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
     expect(chaiHttpResponse.body)
       .to.be.deep.equal({ message: new InvalidParamError().message});
   });

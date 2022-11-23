@@ -1,11 +1,8 @@
 import SignInController from '../../../src/presentation/controllers/signin-controller'
 import MissingParamError, { InvalidParamError } from '../../../src/presentation/errors'
 import EmailValidator from '../../../src/presentation/protocols/email-validator'
-
-interface SutTypes {
-  sut: SignInController,
-  emailValidatorStub: EmailValidator
-}
+import UserModel from '../../../src/domain/models/user'
+import FindUser from '../../../src/domain/usecases/find-user'
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -16,12 +13,38 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 }
 
+const makeFindUser = (): FindUser => {
+  class FindUserStub implements FindUser {
+    async find(email: string): Promise<UserModel | undefined> {
+      return await new Promise(resolves => {
+        resolves({
+        id: 1,
+        username: 'username',
+        email: 'usermail@mail.com',
+        role: 'admin',
+        password: 'hashed_password'
+        });
+      });
+    }
+  }
+
+  return new FindUserStub();
+}
+
+interface SutTypes {
+  sut: SignInController,
+  emailValidatorStub: EmailValidator,
+  findUserStub: FindUser
+}
+
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator();
-  const sut = new SignInController(emailValidatorStub);
+  const findUserStub = makeFindUser();
+  const sut = new SignInController(emailValidatorStub, findUserStub);
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    findUserStub
   }
 }
 
@@ -62,6 +85,21 @@ describe('SignIn Controller', () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ message: new InvalidParamError().message}); 
+  });
+
+  it('Should return an error if email provided has no match in the database', async () => {
+    const { sut, findUserStub } = makeSut();
+    jest.spyOn(findUserStub, 'find')
+      .mockResolvedValueOnce(undefined)
+    const httpRequest = {
+      body: {
+        email: 'no_user@mail.com',
+        password: 'any_password',
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse.body).toEqual({ message: new InvalidParamError().message}); 
   });
 })
