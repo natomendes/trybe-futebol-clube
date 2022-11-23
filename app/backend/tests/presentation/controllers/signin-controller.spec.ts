@@ -4,6 +4,14 @@ import EmailValidator from '../../../src/presentation/protocols/email-validator'
 import UserModel from '../../../src/domain/models/user'
 import FindUser from '../../../src/domain/usecases/find-user'
 
+const mockUser = {
+  id: 1,
+  username: 'username',
+  email: 'usermail@mail.com',
+  role: 'admin',
+  password: 'valid_password'
+};
+
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
@@ -17,13 +25,7 @@ const makeFindUser = (): FindUser => {
   class FindUserStub implements FindUser {
     async find(email: string): Promise<UserModel | undefined> {
       return await new Promise(resolves => {
-        resolves({
-        id: 1,
-        username: 'username',
-        email: 'usermail@mail.com',
-        role: 'admin',
-        password: 'hashed_password'
-        });
+        resolves(mockUser);
       });
     }
   }
@@ -53,7 +55,7 @@ describe('SignIn Controller', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        password: 'any_password',
+        password: 'valid_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -80,7 +82,7 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
-        password: 'any_password',
+        password: 'valid_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -94,8 +96,23 @@ describe('SignIn Controller', () => {
       .mockResolvedValueOnce(undefined)
     const httpRequest = {
       body: {
+        email: 'any_email@mail.com',
+        password: 'valid_password',
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(401);
+    expect(httpResponse.body).toEqual({ message: new InvalidParamError().message}); 
+  });
+
+  it('Should return an error if password provided doesn match user password', async () => {
+    const { sut, findUserStub } = makeSut();
+    jest.spyOn(findUserStub, 'find')
+      .mockResolvedValueOnce(mockUser)
+    const httpRequest = {
+      body: {
         email: 'no_user@mail.com',
-        password: 'any_password',
+        password: 'invalid_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
