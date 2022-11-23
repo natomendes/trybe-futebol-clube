@@ -1,25 +1,27 @@
-// interface SutTypes {
-//   sut: SignInController
-// }
+import SignInController from '../../../src/presentation/controllers/signin-controller'
 
-// const makeSut = (): SutTypes => {
-//   const sut = new SignInController();
-//   return {
-//     sut,
-//   }
-// }
+interface SutTypes {
+  sut: SignInController
+}
 
-// describe('SignIn Controller', () => {
-//   it('Should return 400 if no email is provided', () => {
-//     const { sut } = makeSut();
-//     const httpRequest = {
-//       body: {
-//         email: 'any_email@mail.com',
-//         password: 'any_password',
-//       }
-//     };
+const makeSut = (): SutTypes => {
+  const sut = new SignInController();
+  return {
+    sut,
+  }
+}
 
-//     const httpResponse = await sut.handle(httpRequest);
-//     expect(httpResponse.statusCode).toBe(400);    
-//   })
-// })
+describe('SignIn Controller', () => {
+  it('Should return 400 if no email is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password',
+      }
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);    
+  })
+})
