@@ -9,6 +9,7 @@ import User from '../database/models/User';
 import { Response } from 'superagent';
 import SignInController from '../presentation/controllers/signin-controller';
 import { response } from 'express';
+import MissingParamError from '../presentation/errors';
 
 chai.use(chaiHttp);
 
@@ -52,7 +53,7 @@ describe('Seu teste', () => {
       };
       const response = await sut.handle(httpRequest);
       console.log(response)
-      res.status(response.statusCode).send();
+      res.status(response.statusCode).json(response.body);
     })
     chaiHttpResponse = await chai
        .request(app)
@@ -62,5 +63,7 @@ describe('Seu teste', () => {
       })
 
     expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body)
+      .to.be.deep.equal({ message: new MissingParamError().message});
   });
 });
