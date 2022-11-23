@@ -1,5 +1,5 @@
 import SignInController from '../../../src/presentation/controllers/signin-controller'
-import MissingParamError, { InvalidParamError } from '../../../src/presentation/errors'
+import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors'
 import EmailValidator from '../../../src/presentation/protocols/email-validator'
 import UserModel from '../../../src/domain/models/user'
 import FindUser from '../../../src/domain/usecases/find-user'
@@ -115,4 +115,21 @@ describe('SignIn Controller', () => {
     await sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith('no_user@mail.com');
   });
+
+  it('Should return 500 if EmailValidator throws', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password',
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual({ message: new ServerError().message })
+  })
 })
