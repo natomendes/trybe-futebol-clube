@@ -1,9 +1,11 @@
-import FindUser from '../../domain/usecases/find-user';
 import MissingParamError, { InvalidParamError } from '../errors';
 import { badRequest, unauthorized } from '../helpers/http-helpers';
-import EmailValidator from '../protocols/email-validator';
-import { HttpRequest, HttpResponse, LoginReq } from '../protocols/http';
-import Controller from './signin-protocols';
+import Controller, {
+  FindUser,
+  EmailValidator,
+  HttpRequest,
+  HttpResponse,
+  LoginReq } from './signin-protocols';
 
 export default class SignInController implements Controller {
   constructor(
