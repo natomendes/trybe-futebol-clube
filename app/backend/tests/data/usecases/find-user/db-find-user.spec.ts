@@ -26,11 +26,18 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbFindUser Usecase', () => {
-  it('Should undefined if no user is found with provided email', async () => {
+  it('Should return undefined if no user is found with provided email', async () => {
     const { sut, findUserRepositoryStub } = makeSut();
     jest.spyOn(findUserRepositoryStub, 'find')
       .mockResolvedValue(undefined);
-    const user = await sut.find('no_user@mail.com');
-    expect(user).toBeUndefined();
-  })
+    const promise = sut.find('no_user@mail.com');
+    expect(promise).resolves.toBeUndefined();
+  });
+
+  it('Should call FindUserRepository with correct email', async () => {
+    const { sut, findUserRepositoryStub } = makeSut();
+    const findSpy = jest.spyOn(findUserRepositoryStub, 'find')
+    await sut.find('no_user@mail.com');
+    expect(findSpy).toHaveBeenCalledWith('no_user@mail.com');
+  });
 })
