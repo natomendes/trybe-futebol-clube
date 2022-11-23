@@ -1,6 +1,7 @@
-export interface HttpRequest<T> {
-  body?: T
+export interface HttpRequest {
+  body?: unknown
 }
 export interface HttpResponse {
   statusCode: number
+  body?: unknown
 }
