@@ -48,4 +48,13 @@ describe('DbFindUser Usecase', () => {
       const promise = sut.find('no_user@mail.com');
       expect(promise).rejects.toThrow();
     });
+
+    it('Should return an user on success', async () => {
+      const { sut } = makeSut();
+      const user = await sut.find('valid@mail.com');
+      expect(user).toHaveProperty('username');
+      expect(user).toHaveProperty('email');
+      expect(user).toHaveProperty('role');
+      expect(user).toHaveProperty('password');
+      });
 })
