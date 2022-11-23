@@ -105,7 +105,7 @@ describe('SignIn Controller', () => {
     expect(httpResponse.body).toEqual({ message: new InvalidParamError().message}); 
   });
 
-  it('Should return an error if password provided doesn match user password', async () => {
+  it('Should return an error if password provided doesnt match user password', async () => {
     const { sut, findUserStub } = makeSut();
     jest.spyOn(findUserStub, 'find')
       .mockResolvedValueOnce(mockUser)
