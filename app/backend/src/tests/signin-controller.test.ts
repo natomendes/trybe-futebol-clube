@@ -43,8 +43,8 @@ describe('Seu teste', () => {
   //   (UserMySqlRepository.find as sinon.SinonStub).restore();
   // })
 
-  it('Should return 400 if no email is provided', async () => {
-    app.post('/login', async (req, res) => {
+  it('Should return 400 and and error if no email is provided', async () => {
+    app.post('/login-no-email', async (_req, res) => {
       const sut = makeSut();
       const httpRequest = {
         body: {
@@ -52,15 +52,37 @@ describe('Seu teste', () => {
         }
       };
       const response = await sut.handle(httpRequest);
-      console.log(response)
       res.status(response.statusCode).json(response.body);
     })
     chaiHttpResponse = await chai
        .request(app)
-       .post('/login')
+       .post('/login-no-email')
        .send({
         password: 'any_password',
-      })
+      });
+
+    expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body)
+      .to.be.deep.equal({ message: new MissingParamError().message});
+  });
+
+  it('Should return 400 and and error if no password is provided', async () => {
+    app.post('/login-no-email', async (_req, res) => {
+      const sut = makeSut();
+      const httpRequest = {
+        body: {
+          email: 'any_email@mail.com',
+        }
+      };
+      const response = await sut.handle(httpRequest);
+      res.status(response.statusCode).json(response.body);
+    })
+    chaiHttpResponse = await chai
+       .request(app)
+       .post('/login-no-email')
+       .send({
+        password: 'any_password',
+      });
 
     expect(chaiHttpResponse.status).to.be.equal(400);
     expect(chaiHttpResponse.body)
