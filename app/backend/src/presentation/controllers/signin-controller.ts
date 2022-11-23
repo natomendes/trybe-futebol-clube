@@ -10,7 +10,7 @@ type LoginReq = {
   password?: string,
 };
 
-export default class SignInController implements Controller {
+export default class SignInController implements Controller<LoginReq> {
   constructor(
     private readonly emailValidator: EmailValidator,
     private readonly findUser: FindUser,
