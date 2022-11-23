@@ -17,6 +17,10 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*","./jest.config.js","./jest-staged.config.js"],
+  "include": [
+    "src/**/*",
+    "./jest.config.js",
+    "jest-unit.config.js"
+  ],
   "exclude": ["src/tests"]
 }
