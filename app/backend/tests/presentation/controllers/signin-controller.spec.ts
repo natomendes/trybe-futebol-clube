@@ -1,8 +1,7 @@
 import SignInController from '../../../src/presentation/controllers/signin-controller'
 import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors'
-import EmailValidator from '../../../src/presentation/protocols/email-validator'
+import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/signin-protocols'
 import UserModel from '../../../src/domain/models/user'
-import FindUser from '../../../src/domain/usecases/find-user'
 
 const mockUser = {
   id: 1,
@@ -33,20 +32,37 @@ const makeFindUser = (): FindUser => {
   return new FindUserStub();
 }
 
+const makeTokenGenerator = (): TokenGenerator => {
+  class TokenGeneratorStub implements TokenGenerator {
+    generate(email: string): string {
+      return 'valid_token'
+    }
+  }
+
+  return new TokenGeneratorStub();
+}
+
 interface SutTypes {
   sut: SignInController,
   emailValidatorStub: EmailValidator,
-  findUserStub: FindUser
+  findUserStub: FindUser,
+  tokenGeneratorStub: TokenGenerator
 }
 
 const makeSut = (): SutTypes => {
+  const tokenGeneratorStub = makeTokenGenerator();
   const emailValidatorStub = makeEmailValidator();
   const findUserStub = makeFindUser();
-  const sut = new SignInController(emailValidatorStub, findUserStub);
+  const sut = new SignInController(
+    emailValidatorStub,
+    findUserStub,
+    tokenGeneratorStub,
+  );
   return {
     sut,
     emailValidatorStub,
-    findUserStub
+    findUserStub,
+    tokenGeneratorStub
   }
 }
 
@@ -148,5 +164,18 @@ describe('SignIn Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual({ message: new ServerError().message })
-  })
+  });
+
+  it('Should return a token on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'valid_password',
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({ token: 'valid_token'});
+  });
 })
