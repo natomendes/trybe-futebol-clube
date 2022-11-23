@@ -34,9 +34,9 @@ describe('Bcrypt Adapter', () => {
     expect(isValid).toBe(false)
   });
 
-  // it('Should return true if bcrypt.compare returns true', async () => {
-  //   const sut = makeSut();
-  //   const isValid = await sut.validate('password', 'hashed_password');
-  //   expect(isValid).toBe(true)
-  // });
+  it('Should return true if bcrypt.compare returns true', async () => {
+    const sut = makeSut();
+    const isValid = await sut.validate('password', 'hashed_password');
+    expect(isValid).toBe(true)
+  });
 })
