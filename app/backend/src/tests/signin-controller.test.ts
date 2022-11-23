@@ -9,7 +9,7 @@ import User from '../database/models/User';
 import { Response } from 'superagent';
 import SignInController from '../presentation/controllers/signin-controller';
 import MissingParamError, { InvalidParamError } from '../presentation/errors';
-import { EmailValidator, FindUser, TokenGenerator } from '../presentation/controllers/signin-protocols';
+import { EmailValidator, FindUser, TokenGenerator, Encrypter } from '../presentation/controllers/signin-protocols';
 import { UserModel } from '../domain/models/user';
 
 chai.use(chaiHttp);
@@ -55,27 +55,42 @@ const makeTokenGenerator = (): TokenGenerator => {
   return new TokenGeneratorStub();
 }
 
+const makeEncrypterStub = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    async validate(password: string, hash: string): Promise<boolean> {
+      return await new Promise(resolve => {
+        resolve(true);
+      });
+    }
+  }
+  return new EncrypterStub();
+}
+
 interface SutTypes {
   sut: SignInController,
   emailValidatorStub: EmailValidator,
   findUserStub: FindUser,
-  tokenGeneratorStub: TokenGenerator
+  tokenGeneratorStub: TokenGenerator,
+  encrypterStub: Encrypter
 }
 
 const makeSut = (): SutTypes => {
+  const encrypterStub = makeEncrypterStub();
   const tokenGeneratorStub = makeTokenGenerator();
   const findUserStub = makeFindUser();
   const emailValidatorStub = makeEmailValidator();  
   const sut = new SignInController(
     emailValidatorStub,
     findUserStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    encrypterStub
   );
   return {
     sut,
     emailValidatorStub,
     findUserStub,
     tokenGeneratorStub,
+    encrypterStub
   }
 }
 

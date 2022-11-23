@@ -1,8 +1,9 @@
-import SignInController from '../../../src/presentation/controllers/signin-controller'
-import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors'
-import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/signin-protocols'
-import { UserModel } from '../../../src/domain/models/user'
-import UserModelMock from '../../mocks/user-model-mock'
+import SignInController from '../../../src/presentation/controllers/signin-controller';
+import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors';
+import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/signin-protocols';
+import { UserModel } from '../../../src/domain/models/user';
+import UserModelMock from '../../mocks/user-model-mock';
+import { Encrypter } from '../../../src/data/protocols/encrypter'
 
 
 const makeEmailValidator = (): EmailValidator => {
@@ -36,14 +37,27 @@ const makeTokenGenerator = (): TokenGenerator => {
   return new TokenGeneratorStub();
 }
 
+const makeEncrypterStub = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    async validate(password: string, hash: string): Promise<boolean> {
+      return await new Promise(resolve => {
+        resolve(true);
+      });
+    }
+  }
+  return new EncrypterStub();
+}
+
 interface SutTypes {
   sut: SignInController,
   emailValidatorStub: EmailValidator,
   findUserStub: FindUser,
-  tokenGeneratorStub: TokenGenerator
+  tokenGeneratorStub: TokenGenerator,
+  encrypterStub: Encrypter
 }
 
 const makeSut = (): SutTypes => {
+  const encrypterStub = makeEncrypterStub();
   const tokenGeneratorStub = makeTokenGenerator();
   const emailValidatorStub = makeEmailValidator();
   const findUserStub = makeFindUser();
@@ -51,12 +65,14 @@ const makeSut = (): SutTypes => {
     emailValidatorStub,
     findUserStub,
     tokenGeneratorStub,
+    encrypterStub
   );
   return {
     sut,
     emailValidatorStub,
     findUserStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    encrypterStub
   }
 }
 
@@ -65,7 +81,7 @@ describe('SignIn Controller', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        password: 'hashed_password',
+        password: 'valid_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -92,7 +108,7 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'invalid_email@mail.com',
-        password: 'hashed_password',
+        password: 'valid_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -107,7 +123,7 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'no_user@mail.com',
-        password: 'hashed_password',
+        password: 'valid_password',
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -116,9 +132,9 @@ describe('SignIn Controller', () => {
   });
 
   it('Should return an error if password provided doesnt match user password', async () => {
-    const { sut, findUserStub } = makeSut();
-    jest.spyOn(findUserStub, 'find')
-      .mockResolvedValueOnce(UserModelMock)
+    const { sut, encrypterStub } = makeSut();
+    jest.spyOn(encrypterStub, 'validate')
+      .mockResolvedValueOnce(false);
     const httpRequest = {
       body: {
         email: 'valid_email@mail.com',
@@ -136,7 +152,7 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'valid_email@mail.com',
-        password: 'hashed_password',
+        password: 'valid_password',
       }
     };
     await sut.handle(httpRequest);
@@ -152,12 +168,25 @@ describe('SignIn Controller', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
-        password: 'hashed_password',
+        password: 'valid_password',
       }
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual({ message: new ServerError().message })
+  });
+
+  it('Should call Encrypter with correct values', async () => {
+    const { sut, encrypterStub } = makeSut();
+    const isValidPasswordSpy = jest.spyOn(encrypterStub, 'validate');
+    const httpRequest = {
+      body: {
+        email: 'valid_email@mail.com',
+        password: 'valid_password',
+      }
+    };
+    await sut.handle(httpRequest);
+    expect(isValidPasswordSpy).toHaveBeenCalledWith('valid_password', 'hashed_password');
   });
 
   it('Should return a token on success', async () => {
