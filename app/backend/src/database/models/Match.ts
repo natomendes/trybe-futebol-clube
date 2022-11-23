@@ -2,18 +2,47 @@ import { Model, DataTypes } from 'sequelize';
 import db from '.';
 // import OtherModel from './OtherModel';
 
-class Team extends Model {
+class Match extends Model {
   // declare <campo>: <tipo>;
 }
 
-Team.init({
+Match.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  teamName: {
-    type: DataTypes.STRING,
+  homeTeam: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'home_team',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
+  },
+  homeTeamGoals: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'home_team_goals',
+  },
+  awayTeam: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'away_team',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
+  },
+  awayTeamGoals: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: 'away_team_goals',
+  },
+  inProgress: {
+    type: DataTypes.BOOLEAN,
+    field: 'in_progress',
     allowNull: false,
   },
 }, {
@@ -21,7 +50,7 @@ Team.init({
   underscored: true,
   sequelize: db,
   // modelName: 'example',
-  tableName: 'teams',
+  tableName: 'matches',
   timestamps: false,
 });
 
@@ -36,4 +65,4 @@ Team.init({
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
 
-export default Team;
+export default Match;
