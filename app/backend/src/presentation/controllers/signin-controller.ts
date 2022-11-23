@@ -1,3 +1,4 @@
+import MissingParamError from '../errors';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 import Controller from './signin-protocols';
 
@@ -10,6 +11,7 @@ export default class SignInController implements Controller {
     return new Promise((resolve) => {
       resolve({
         statusCode: this.statusCode,
+        body: { message: new MissingParamError().message },
       });
     });
   }
