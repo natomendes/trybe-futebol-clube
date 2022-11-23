@@ -7,13 +7,15 @@ import {
   HttpRequest,
   HttpResponse,
   LoginReq,
-  TokenGenerator } from './signin-protocols';
+  TokenGenerator,
+  Encrypter } from './signin-protocols';
 
 export default class SignInController implements Controller {
   constructor(
     private readonly emailValidator: EmailValidator,
     private readonly findUser: FindUser,
     private readonly tokenGenerator: TokenGenerator,
+    private readonly encrypter: Encrypter,
   ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -25,12 +27,15 @@ export default class SignInController implements Controller {
         }
       }
       const { email, password } = httpRequest.body as LoginReq;
-      const isValid = this.emailValidator.isValid(email as string);
-      if (!isValid) return badRequest(new InvalidParamError());
+      const isValidEmail = this.emailValidator.isValid(email as string);
+      if (!isValidEmail) return badRequest(new InvalidParamError());
+
       const user = await this.findUser.find(email as string);
-      if (!user || user.password !== password) {
-        return unauthorized(new InvalidParamError());
-      }
+      if (!user) return unauthorized(new InvalidParamError());
+
+      const isValidPassword = await this.encrypter.validate(password as string, user.password);
+      if (!isValidPassword) return unauthorized(new InvalidParamError());
+
       return ok({ token: this.tokenGenerator.generate(email as string) });
     } catch (error) {
       return serverError(new ServerError());
