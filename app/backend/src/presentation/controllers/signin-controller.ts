@@ -1,5 +1,6 @@
+import FindUser from '../../domain/usecases/find-user';
 import MissingParamError, { InvalidParamError } from '../errors';
-import { badRequest } from '../helpers/http-helpers';
+import { badRequest, unauthorized } from '../helpers/http-helpers';
 import EmailValidator from '../protocols/email-validator';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 import Controller from './signin-protocols';
@@ -11,7 +12,8 @@ type LoginReq = {
 
 export default class SignInController implements Controller {
   constructor(
-    private emailValidator: EmailValidator,
+    private readonly emailValidator: EmailValidator,
+    private readonly findUser: FindUser,
   ) {}
 
   async handle(httpRequest: HttpRequest<LoginReq>): Promise<HttpResponse> {
@@ -21,16 +23,17 @@ export default class SignInController implements Controller {
         return badRequest(new MissingParamError());
       }
     }
+
     const { email } = httpRequest.body as LoginReq;
     const isValid = this.emailValidator.isValid(email as string);
     if (!isValid) {
       return badRequest(new InvalidParamError());
     }
-    return new Promise((resolve) => {
-      resolve({
-        statusCode: 200,
-        body: { message: 'ok' },
-      });
-    });
+
+    const user = await this.findUser.find(email as string);
+    if (!user) {
+      return unauthorized(new InvalidParamError());
+    }
+    return { statusCode: 200, body: { message: 'ok' } };
   }
 }
