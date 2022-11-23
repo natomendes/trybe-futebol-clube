@@ -3,7 +3,11 @@ import db from '.';
 import Match from './Match';
 
 class User extends Model {
-  // declare <campo>: <tipo>;
+  declare id: number;
+  declare username: string;
+  declare email: string;
+  declare password: string;
+  declare role: string;
 }
 
 User.init({
