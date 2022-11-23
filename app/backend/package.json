@@ -17,8 +17,7 @@
     "lint": "eslint ./src --ext .ts",
     "test:std": "jest --passWithNoTests --silent --runInBand --no-cache",
     "test:unit": "npm run test:std -- -c jest-unit.config.js --watch",
-    "test:staged": "npm run test:std -- --findRelatedTests",
-    "test:staged:integration": "npm test -- --findRelatedTests"
+    "test:staged": "npm run test:std -- --findRelatedTests"
   },
   "keywords": [],
   "author": "",
