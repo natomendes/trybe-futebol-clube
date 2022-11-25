@@ -80,7 +80,7 @@ describe('AuthenticantionController', () => {
     }
     const httpResponse = await sut.handle(httpResquest);
     expect(httpResponse.statusCode).toBe(200);
-    expect(httpResponse.body).toEqual({ role: 'admin'})
+    expect(httpResponse.body).toEqual({ role: 'admin'});
   });
 
   it('Should return user role on success', async () => {
