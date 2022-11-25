@@ -20,7 +20,7 @@ const { app } = new App();
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('SignInController', () => {
   let chaiHttpResponse: Response;
 
   beforeEach(async () => {
