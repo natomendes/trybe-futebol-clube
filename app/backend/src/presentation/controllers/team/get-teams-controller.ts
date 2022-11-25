@@ -10,7 +10,7 @@ export default class GetTeamsController implements Controller {
 
   async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const teams = this.findTeams.find();
+      const teams = await this.findTeams.find();
       return ok(teams);
     } catch (error) {
       return serverError(new ServerError());
