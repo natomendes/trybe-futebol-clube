@@ -4,7 +4,8 @@ import Match from './Match';
 // import OtherModel from './OtherModel';
 
 class Team extends Model {
-  // declare <campo>: <tipo>;
+  declare id: number;
+  declare teamName: string;
 }
 
 Team.init({

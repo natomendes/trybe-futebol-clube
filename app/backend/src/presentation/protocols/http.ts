@@ -13,5 +13,5 @@ export interface HttpRequest {
 }
 export interface HttpResponse {
   statusCode: number
-  body?: unknown
+  body?: any
 }

@@ -28,15 +28,7 @@ export const serverError = (error: Error): HttpResponse => ({
   },
 });
 
-type SignInSuccess = {
-  token: string
-};
-
-type AuthSucces = {
-  role: string
-};
-
-export const ok = (data: SignInSuccess | AuthSucces): HttpResponse => ({
+export const ok = (data: any): HttpResponse => ({
   statusCode: 200,
   body: data,
 });
