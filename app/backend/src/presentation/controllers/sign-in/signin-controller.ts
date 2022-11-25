@@ -6,7 +6,6 @@ import {
   EmailValidator,
   HttpRequest,
   HttpResponse,
-  LoginReq,
   TokenGenerator,
   Encrypter } from './signin-protocols';
 
@@ -22,11 +21,11 @@ export default class SignInController implements Controller {
     try {
       const requiredFields = ['email', 'password'];
       for (let i = 0; i < requiredFields.length; i += 1) {
-        if (!httpRequest.body?.[requiredFields[i] as keyof LoginReq]) {
+        if (!httpRequest.body?.[requiredFields[i]]) {
           return badRequest(new MissingParamError());
         }
       }
-      const { email, password } = httpRequest.body as LoginReq;
+      const { email, password } = httpRequest.body;
       const isValidEmail = this.emailValidator.isValid(email as string);
       if (!isValidEmail) return badRequest(new InvalidParamError());
 
