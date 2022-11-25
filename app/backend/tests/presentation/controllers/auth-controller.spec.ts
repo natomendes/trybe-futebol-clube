@@ -94,6 +94,6 @@ describe('AuthenticantionController', () => {
     }
     const httpResponse = await sut.handle(httpResquest);
     expect(httpResponse.statusCode).toBe(404);
-    expect(httpResponse.body).toEqual({ message: 'User not found'})
+    expect(httpResponse.body).toEqual({ message: 'User not found'});
   });
 })
