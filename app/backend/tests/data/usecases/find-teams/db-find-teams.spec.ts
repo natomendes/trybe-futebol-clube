@@ -5,7 +5,7 @@ import { getTeamsMock } from '../../../mocks/team-model-mock'
 
 const makeFindTeamsRepositoryStub = (): FindTeamsRepository => {
   class FindTeamsRepositoryStub implements FindTeamsRepository {
-    async find(): Promise<TeamModel[]> {
+    async findAll(): Promise<TeamModel[]> {
       return getTeamsMock;
     }
   }
@@ -29,7 +29,7 @@ const makeSut = (): SutTypes => {
 describe('DbFindTeams', () => {
   it('Should throw if FindTeamsRepository throws', async () => {
     const { sut, findTeamsRepositoryStub } = makeSut();
-    jest.spyOn(findTeamsRepositoryStub, 'find')
+    jest.spyOn(findTeamsRepositoryStub, 'findAll')
       .mockReturnValueOnce(new Promise((_res, rej) => {
         rej(new Error());
       }));

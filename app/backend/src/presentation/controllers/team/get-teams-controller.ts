@@ -1,6 +1,5 @@
 import { ok, serverError } from '../../helpers/http-helpers';
-import { FindTeams } from '../../../domain/usecases/find-teams';
-import { Controller, HttpRequest, HttpResponse } from '../sign-in/signin-protocols';
+import { Controller, HttpRequest, HttpResponse, FindTeams } from './get-teams-protocols';
 import { ServerError } from '../../errors';
 
 export default class GetTeamsController implements Controller {
