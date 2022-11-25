@@ -1,18 +1,17 @@
-import MissingParamError from '../../errors';
-import { badRequest, ok } from '../../helpers/http-helpers';
+import MissingParamError, { InvalidParamError } from '../../errors';
+import { badRequest, notFound, ok } from '../../helpers/http-helpers';
 import { HttpRequest, HttpResponse } from '../sign-in/signin-protocols';
-import { Controller } from './get-teams-protocols';
+import { Controller, FindTeam } from './get-teams-protocols';
 
 export default class GetTeamController implements Controller {
-  private hasId = false;
+  constructor(private findTeam: FindTeam) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { id } = httpRequest.params;
-    if (id) {
-      this.hasId = true;
-    }
-    if (!this.hasId) {
-      return badRequest(new MissingParamError('id'));
-    }
+    if (!id) return badRequest(new MissingParamError('id'));
+
+    const team = await this.findTeam.find(id);
+    if (!team) return notFound(new InvalidParamError('Team not found'));
+
     return ok({ id: 5, teamName: 'Cruzeiro' });
   }
 }
