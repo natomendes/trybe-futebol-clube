@@ -4,7 +4,7 @@ export type LoginReq = {
 };
 
 export type AuthHeader = {
-  authentication?: string
+  authorization?: string
 };
 
 export interface HttpRequest {
