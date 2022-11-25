@@ -19,11 +19,11 @@ describe('TeamRepository', () => {
     expect(teams).toEqual([]);
   });
 
-  // it('Should return all teams on success', async () => {
-  //   const sut = new TeamRepository();
-  //   jest.spyOn(Team, 'findAll')
-  //     .mockResolvedValueOnce(getTeamsMock as Team[]);
-  //   const teams = await sut.findAll();
-  //   expect(teams).toEqual(getTeamsMock);
-  // });
+  it('Should return all teams on success', async () => {
+    const sut = new TeamRepository();
+    jest.spyOn(Team, 'findAll')
+      .mockResolvedValueOnce(getTeamsMock as Team[]);
+    const teams = await sut.findAll();
+    expect(teams).toEqual(getTeamsMock);
+  });
 });
