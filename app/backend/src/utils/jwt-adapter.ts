@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
-import { TokenGenerator } from '../presentation/protocols/token';
+import { TokenGenerator, TokenValidator } from '../presentation/protocols/token';
 
-export default class TokenGeneratorAdapter implements TokenGenerator {
+export default class JWTAdapter implements TokenGenerator, TokenValidator {
   private secret = process.env.JWT_SECRET || 'jwt_secret';
   private jwtConfig: jwt.SignOptions = {
     expiresIn: '7d',
@@ -10,5 +10,9 @@ export default class TokenGeneratorAdapter implements TokenGenerator {
 
   generate(email: string): string {
     return jwt.sign({ email }, this.secret as string, this.jwtConfig);
+  }
+
+  validate(token: string): jwt.JwtPayload {
+    return jwt.verify(token, this.secret) as jwt.JwtPayload;
   }
 }
