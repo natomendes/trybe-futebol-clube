@@ -8,6 +8,6 @@ export default class DbFindTeams implements FindTeams {
   ) {}
 
   async find(): Promise<TeamModel[]> {
-    return this.findTeamsRepository.find();
+    return this.findTeamsRepository.findAll();
   }
 }
