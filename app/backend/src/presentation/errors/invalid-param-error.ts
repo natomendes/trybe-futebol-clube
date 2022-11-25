@@ -1,6 +1,8 @@
 export default class InvalidParamError extends Error {
-  constructor() {
-    super('Incorrect email or password');
+  constructor(
+    message = 'Incorrect email or password',
+  ) {
+    super(message);
     this.name = 'Invalid Param';
   }
 }
