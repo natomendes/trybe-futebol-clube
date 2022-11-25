@@ -3,7 +3,12 @@ export type LoginReq = {
   password?: string,
 };
 
+export type AuthHeader = {
+  authentication?: string
+};
+
 export interface HttpRequest {
+  headers?: AuthHeader
   body?: LoginReq
 }
 export interface HttpResponse {
