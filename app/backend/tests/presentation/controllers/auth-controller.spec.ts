@@ -1,5 +1,5 @@
 import { MissingTokenError, InvalidTokenError, InvalidParamError } from '../../../src/presentation/errors';
-import AuthenticationController from '../../../src/presentation/controllers/auth-controller'
+import AuthenticationController from '../../../src/presentation/controllers/auth/auth-controller'
 import { TokenValidator } from '../../../src/presentation/protocols/token';
 import { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 import { FindUser } from '../../../src/domain/usecases/find-user';
