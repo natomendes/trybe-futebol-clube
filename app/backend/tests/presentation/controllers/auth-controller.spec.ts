@@ -1,4 +1,4 @@
-import { MissingTokenError, InvalidTokenError } from '../../../src/presentation/errors';
+import { MissingTokenError, InvalidTokenError, InvalidParamError } from '../../../src/presentation/errors';
 import AuthenticationController from '../../../src/presentation/controllers/auth-controller'
 import { TokenValidator } from '../../../src/presentation/protocols/token';
 import { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
@@ -71,7 +71,7 @@ describe('AuthenticantionController', () => {
     expect(httpResponse.body).toEqual({ message: new InvalidTokenError().message})
   });
 
-  it('Should return user role on success', async () => {
+  it('Should return not found if user dont exists on database', async () => {
     const { sut } = makeSut();
     const httpResquest = {
       headers: {
@@ -81,5 +81,19 @@ describe('AuthenticantionController', () => {
     const httpResponse = await sut.handle(httpResquest);
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body).toEqual({ role: 'admin'})
+  });
+
+  it('Should return user role on success', async () => {
+    const { sut, findUserStub } = makeSut();
+    jest.spyOn(findUserStub, 'find')
+      .mockResolvedValueOnce(undefined);
+    const httpResquest = {
+      headers: {
+        authorization: 'valid_token'
+      }
+    }
+    const httpResponse = await sut.handle(httpResquest);
+    expect(httpResponse.statusCode).toBe(404);
+    expect(httpResponse.body).toEqual({ message: 'User not found'})
   });
 })
