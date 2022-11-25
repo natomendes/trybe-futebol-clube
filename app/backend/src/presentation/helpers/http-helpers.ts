@@ -32,7 +32,11 @@ type SignInSuccess = {
   token: string
 };
 
-export const ok = (data: SignInSuccess): HttpResponse => ({
+type AuthSucces = {
+  role: string
+};
+
+export const ok = (data: SignInSuccess | AuthSucces): HttpResponse => ({
   statusCode: 200,
   body: data,
 });
