@@ -1,5 +1,5 @@
-import MissingParamError, { InvalidParamError, ServerError } from '../errors';
-import { badRequest, serverError, unauthorized, ok } from '../helpers/http-helpers';
+import MissingParamError, { InvalidParamError, ServerError } from '../../errors';
+import { badRequest, serverError, unauthorized, ok } from '../../helpers/http-helpers';
 import {
   Controller,
   FindUser,

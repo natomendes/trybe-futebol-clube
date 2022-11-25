@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Controller, HttpRequest } from '../../presentation/controllers/signin-protocols';
+import { Controller, HttpRequest } from '../../presentation/controllers/sign-in/signin-protocols';
 
 const adaptRoute = (controller: Controller) => async (req: Request, res: Response) => {
   const httpRequest: HttpRequest = {

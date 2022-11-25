@@ -1,5 +1,5 @@
 import EmailValidatorAdapter from '../../utils/email-validator-adapter';
-import SignInController from '../../presentation/controllers/signin-controller';
+import SignInController from '../../presentation/controllers/sign-in/signin-controller';
 import DbFindUser from '../../data/usecases/find-user/db-find-user';
 import UserRepository from '../../infra/db/user-repository/user';
 import JWTAdapter from '../../utils/jwt-adapter';

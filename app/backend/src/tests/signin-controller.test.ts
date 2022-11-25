@@ -11,7 +11,7 @@ import MissingParamError, { InvalidParamError, ServerError } from '../presentati
 import EmailValidatorAdapter from '../utils/email-validator-adapter';
 import DbFindUser from '../data/usecases/find-user/db-find-user';
 import BcryptAdapter from '../infra/criptography/bcrypt-adapter';
-import TokenGeneratorAdapter from '../utils/token-generator-adapter'
+import TokenGeneratorAdapter from '../utils/jwt-adapter'
 
 
 chai.use(chaiHttp);

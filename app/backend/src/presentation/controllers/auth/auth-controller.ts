@@ -1,7 +1,6 @@
-import { InvalidParamError, InvalidTokenError, MissingTokenError, ServerError } from '../errors';
-import { badRequest, notFound, ok, serverError, unauthorized } from '../helpers/http-helpers';
-import { HttpRequest, HttpResponse } from '../protocols/http';
-import { Controller, TokenValidator, FindUser } from './signin-protocols';
+import { InvalidParamError, InvalidTokenError, MissingTokenError, ServerError } from '../../errors';
+import { badRequest, notFound, ok, serverError, unauthorized } from '../../helpers/http-helpers';
+import { Controller, TokenValidator, FindUser, HttpRequest, HttpResponse } from './auth-protocols';
 
 export default class AuthenticationController implements Controller {
   constructor(

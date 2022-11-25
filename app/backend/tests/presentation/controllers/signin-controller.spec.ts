@@ -1,6 +1,6 @@
-import SignInController from '../../../src/presentation/controllers/signin-controller';
+import SignInController from '../../../src/presentation/controllers/sign-in/signin-controller';
 import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors';
-import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/signin-protocols';
+import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/sign-in/signin-protocols';
 import { UserModel } from '../../../src/domain/models/user';
 import UserModelMock from '../../mocks/user-model-mock';
 import { Encrypter } from '../../../src/data/protocols/encrypter'

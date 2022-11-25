@@ -1,16 +1,5 @@
 import TokenGeneratorAdapter from '../../src/utils/jwt-adapter'
-import { TokenExpiredError } from 'jsonwebtoken'
-import * as jwt from 'jsonwebtoken'
-// const jwtMock = jest.mock('jsonwebtoken', () => {
-//   const originalModule = jest.requireActual('jsonwebtoken');
 
-//   //Mock the default export and named export 'foo'
-//   return {
-//     __esModule: true,
-//     ...originalModule,
-//     sign: jest.fn(() => 'valid_token'),
-//   };
-// });
 
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(() => 'valid_token'),
