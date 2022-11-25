@@ -2,6 +2,21 @@ import { MissingTokenError, InvalidTokenError } from '../../../src/presentation/
 import AuthenticationController from '../../../src/presentation/controllers/auth-controller'
 import { TokenValidator } from '../../../src/presentation/protocols/token';
 import { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
+import { FindUser } from '../../../src/domain/usecases/find-user';
+import UserModelMock from '../../mocks/user-model-mock';
+import { UserModel } from '../../../src/domain/models/user';
+
+const makeFindUserStub = (): FindUser => {
+  class FindUserStub implements FindUser {
+    async find(email: string): Promise<UserModel | undefined> {
+      return await new Promise(resolves => {
+        resolves(UserModelMock);
+      });
+    }
+  }
+
+  return new FindUserStub();
+}
 
 const makeTokenValidatorStub = (): TokenValidator => {
   class TokenValidatorStub implements TokenValidator {
@@ -16,15 +31,18 @@ const makeTokenValidatorStub = (): TokenValidator => {
 
 interface SutTypes {
   tokenValidatorStub: TokenValidator
-  sut: AuthenticationController
+  sut: AuthenticationController,
+  findUserStub: FindUser
 }
 
 const makeSut = (): SutTypes => {
+  const findUserStub = makeFindUserStub();
   const tokenValidatorStub = makeTokenValidatorStub();
-  const sut = new AuthenticationController(tokenValidatorStub);
+  const sut = new AuthenticationController(tokenValidatorStub, findUserStub);
   return {
     sut,
     tokenValidatorStub,
+    findUserStub
   }
 }
 
@@ -51,5 +69,17 @@ describe('AuthenticantionController', () => {
     const httpResponse = await sut.handle(httpResquest);
     expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse.body).toEqual({ message: new InvalidTokenError().message})
+  });
+
+  it('Should return user role on success', async () => {
+    const { sut } = makeSut();
+    const httpResquest = {
+      headers: {
+        authorization: 'valid_token'
+      }
+    }
+    const httpResponse = await sut.handle(httpResquest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({ role: 'admin'})
   });
 })
