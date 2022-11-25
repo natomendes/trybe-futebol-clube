@@ -11,13 +11,13 @@ describe('TeamRepository', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  // it('Should return an empty array if no teams are found', async () => {
-  //   const sut = new TeamRepository();
-  //   jest.spyOn(Team, 'findAll')
-  //     .mockResolvedValueOnce([]);
-  //   const teams = await sut.findAll();
-  //   expect(teams).toEqual([]);
-  // });
+  it('Should return an empty array if no teams are found', async () => {
+    const sut = new TeamRepository();
+    jest.spyOn(Team, 'findAll')
+      .mockResolvedValueOnce([]);
+    const teams = await sut.findAll();
+    expect(teams).toEqual([]);
+  });
 
   // it('Should return all teams on success', async () => {
   //   const sut = new TeamRepository();
