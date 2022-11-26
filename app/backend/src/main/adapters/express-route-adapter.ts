@@ -8,6 +8,7 @@ const adaptRoute = (controller: Controller) => async (req: Request, res: Respons
     query: req.query,
     body: req.body,
   };
+
   const httpResponse = await controller.handle(httpRequest);
   res
     .status(httpResponse.statusCode)
