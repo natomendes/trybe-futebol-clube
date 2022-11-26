@@ -14,6 +14,7 @@ export default class AddMatchController implements Controller {
     'homeTeam',
     'awayTeam',
     'homeTeamGoals',
+    'awayTeamGoals',
   ];
 
   constructor(private readonly tokenValidator: TokenValidator) {}
