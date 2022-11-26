@@ -38,13 +38,13 @@ describe('TeamRepository', () => {
       expect(team).toEqual(undefined);
     });
 
-    // it('Should return a team on success', async () => {
-    //   const sut = new TeamRepository();
-    //   jest.spyOn(Team, 'findOne')
-    //     .mockResolvedValueOnce(teamMock as Team);
-    //   const team = await sut.findOne('valid_id');
-    //   expect(team).toEqual(teamMock);
-    // });
+    it('Should return a team on success', async () => {
+      const sut = new TeamRepository();
+      jest.spyOn(Team, 'findOne')
+        .mockResolvedValueOnce(teamMock as Team);
+      const team = await sut.findOne('valid_id');
+      expect(team).toEqual(teamMock);
+    });
   });
   
 });
