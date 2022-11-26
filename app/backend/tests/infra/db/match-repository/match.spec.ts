@@ -9,4 +9,15 @@ describe('MatchRepository', () => {
       .mockRejectedValueOnce(new Error());
     const promise = sut.findAll();
     await expect(promise).rejects.toThrow();
-  });});
+  });
+  describe('findAll method', () => {
+    it('Should return an empty array if no matches are found', async () => {
+      const sut = new MatchRepository();
+      jest.spyOn(Match, 'findAll')
+        .mockResolvedValueOnce([]);
+      const matches = await sut.findAll();
+      expect(matches).toEqual([]);
+    });
+  });
+  
+});
