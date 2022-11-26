@@ -51,9 +51,11 @@ export default class AddMatchController implements Controller {
     return true;
   }
 
-  private async validateTeams(homeTeam: string): Promise<boolean> {
-    const isValidTeam = await this.findTeam.find(homeTeam);
-    return !!isValidTeam;
+  private async validateTeams(homeTeam: string, awayTeam: string): Promise<boolean> {
+    const homeTeamReturn = await this.findTeam.find(homeTeam);
+    const awayTeamReturn = await this.findTeam.find(awayTeam);
+
+    return !!homeTeamReturn && !!awayTeamReturn;
   }
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -64,7 +66,7 @@ export default class AddMatchController implements Controller {
       if (!areParamsValid) return badRequest(new MissingParamError('Invalid request body'));
       const { homeTeam, awayTeam } = httpRequest.body;
       if (homeTeam === awayTeam) return unprocessableEntity(new InvalidParamError(this.sameTeam));
-      if (!await this.validateTeams(homeTeam)) {
+      if (!await this.validateTeams(homeTeam, awayTeam)) {
         return notFound(new InvalidParamError('There is no team with such id!'));
       }
       return ok(token);

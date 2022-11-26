@@ -164,3 +164,15 @@ export const invalidHomeTeamHttpRequest = {
     awayTeamGoals: 2,
   }
 };
+
+export const invalidAwayTeamHttpRequest = {
+  headers: { 
+    authorization: 'valid_token'
+  },
+  body: {
+    homeTeam: 16,
+    awayTeam: 'invalid_home_team',
+    homeTeamGoals: 2,
+    awayTeamGoals: 2,
+  }
+};
