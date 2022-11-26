@@ -44,4 +44,10 @@ describe('DbFindTeams', () => {
     const team = await sut.find('valid_id');
     expect(team).toBeUndefined();
   });
+
+  it('Should return a team on success', async () => {
+    const { sut } = makeSut();
+    const team = await sut.find('valid_id');
+    expect(team).toEqual(teamMock);
+  });
 });
