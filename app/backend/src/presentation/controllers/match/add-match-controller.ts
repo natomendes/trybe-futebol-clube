@@ -1,5 +1,6 @@
-import { InvalidTokenError, ServerError } from '../../errors';
-import { unauthorized, ok, serverError } from '../../helpers/http-helpers';
+import { JwtPayload } from 'jsonwebtoken';
+import { InvalidTokenError, MissingTokenError, ServerError } from '../../errors';
+import { unauthorized, ok, serverError, badRequest } from '../../helpers/http-helpers';
 import {
   Controller,
   TokenValidator,
@@ -9,10 +10,17 @@ import {
 
 export default class AddMatchController implements Controller {
   constructor(private readonly tokenValidator: TokenValidator) {}
+
+  private checkToken(token: string | undefined): JwtPayload | undefined {
+    if (!token) return undefined;
+
+    return this.tokenValidator.validate(token);
+  }
+
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { authorization } = httpRequest.headers;
-      const token = this.tokenValidator.validate(authorization);
+      const token = this.checkToken(httpRequest.headers.authorization);
+      if (!token) return badRequest(new MissingTokenError());
 
       return ok(token);
     } catch (error) {

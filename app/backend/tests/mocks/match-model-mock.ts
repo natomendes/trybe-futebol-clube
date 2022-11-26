@@ -74,3 +74,25 @@ export const matchesNotInProgress = [
       "teamName": "Grêmio"
     }
   }];
+
+export const invalidTokenHttpRequest = {
+  headers: { 
+    authorization: 'invalid_token'
+  },
+  body: {
+    homeTeam: 16,
+    awayTeam: 8,
+    homeTeamGoals: 2,
+    awayTeamGoals: 2,
+  }
+};
+
+export const missingTokenHttpRequest = {
+  headers: {},
+  body: {
+    homeTeam: 16,
+    awayTeam: 8,
+    homeTeamGoals: 2,
+    awayTeamGoals: 2,
+  }
+};
