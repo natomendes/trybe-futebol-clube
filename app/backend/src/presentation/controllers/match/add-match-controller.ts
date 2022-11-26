@@ -10,7 +10,12 @@ import {
 } from './match-protocols';
 
 export default class AddMatchController implements Controller {
-  private readonly requiredParams = ['homeTeam', 'awayTeamw'];
+  private readonly requiredParams = [
+    'homeTeam',
+    'awayTeam',
+    'homeTeamGoals',
+  ];
+
   constructor(private readonly tokenValidator: TokenValidator) {}
 
   private checkToken(token: string | undefined): JwtPayload | undefined {
