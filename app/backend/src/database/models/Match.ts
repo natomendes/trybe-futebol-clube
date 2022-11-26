@@ -1,9 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import db from '.';
-// import OtherModel from './OtherModel';
+import Team from './Team';
 
 class Match extends Model {
-  // declare <campo>: <tipo>;
+  declare id: number;
+  declare homeTeam: number;
+  declare homeTeamGoals: number;
+  declare awayTeam: number;
+  declare awayTeamGoals: number;
+  declare inProgress: boolean;
 }
 
 Match.init({
@@ -46,23 +51,16 @@ Match.init({
     allowNull: false,
   },
 }, {
-  // ... Outras configs
   underscored: true,
   sequelize: db,
-  // modelName: 'example',
   tableName: 'matches',
   timestamps: false,
 });
 
-/**
-  * `Workaround` para aplicar as associations em TS:
-  * Associations 1:N devem ficar em uma das instâncias de modelo
-  * */
+Match.belongsTo(Team, { foreignKey: 'homeTeam', as: 'home_team' });
+Match.belongsTo(Team, { foreignKey: 'awayTeam', as: 'away_team' });
 
-// OtherModel.belongsTo(Example, { foreignKey: 'campoA', as: 'campoEstrangeiroA' });
-// OtherModel.belongsTo(Example, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
-
-// Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
-// Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
+Team.hasMany(Match, { foreignKey: 'homeTeam', as: 'home_team' });
+Team.hasMany(Match, { foreignKey: 'awayTeam', as: 'away_team' });
 
 export default Match;
