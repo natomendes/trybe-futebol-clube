@@ -7,7 +7,9 @@ export default class DbFindMatches implements FindMatches {
     private findMatchesRepository: FindMatchesRepository,
   ) {}
 
-  async find(): Promise<Match[]> {
+  async find(inProgress?: string): Promise<Match[]> {
+    if (inProgress) return this.findMatchesRepository.findAll({ inProgress });
+
     return this.findMatchesRepository.findAll();
   }
 }
