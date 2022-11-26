@@ -3,6 +3,7 @@ import { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 import AddMatchController from '../../../../src/presentation/controllers/match/add-match-controller';
 import {
   invalidTokenHttpRequest,
+  missingHomeTeamParamHttpRequest,
   missingTokenHttpRequest,
 } from '../../../mocks/match-model-mock';
 const makeTokenValidatorStub = (): TokenValidator => {
@@ -31,7 +32,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AddMatchController', () => {
-  it('Should return unauthorized if token is invalid', async () => {
+  it('Should return bad request if no token is provided', async () => {
     const { sut } = makeSut();
     const httpResponse = await sut.handle(missingTokenHttpRequest);
     expect(httpResponse.statusCode).toBe(400);
@@ -45,5 +46,12 @@ describe('AddMatchController', () => {
     const httpResponse = await sut.handle(invalidTokenHttpRequest);
     expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse.body).toEqual({ message: 'Token must be a valid token' });
+  });
+
+  it('Should return bad request if homeTeam is not provided', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle(missingHomeTeamParamHttpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
   });
 });
