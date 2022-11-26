@@ -26,18 +26,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('GetTeamController', () => {
-  it('Should return bad request if no id is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      params: {
-        id: '',
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual({ message: 'Missing param "id"'});
-  });
-
   it('Should return not found if no team is found with the id provided', async () => {
     const { sut, findTeamStub } = makeSut();
     jest.spyOn(findTeamStub, 'find').mockResolvedValueOnce(undefined);

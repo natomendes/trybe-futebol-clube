@@ -1,10 +1,6 @@
 export default class MissingParamError extends Error {
-  constructor(param?: string) {
-    if (param) {
-      super(`Missing param "${param}"`);
-    } else {
-      super('All fields must be filled');
-    }
+  constructor(param = 'All fields must be filled') {
+    super(param);
     this.name = 'Missing Param';
   }
 }
