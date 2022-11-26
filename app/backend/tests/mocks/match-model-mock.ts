@@ -96,3 +96,14 @@ export const missingTokenHttpRequest = {
     awayTeamGoals: 2,
   }
 };
+
+export const missingHomeTeamParamHttpRequest = {
+  headers: { 
+    authorization: 'valid_token'
+  },
+  body: {
+    awayTeam: 8,
+    homeTeamGoals: 2,
+    awayTeamGoals: 2,
+  }
+};
