@@ -1,5 +1,4 @@
 import { FindMatchesRepository } from '../../../../src/data/protocols/find-matches-repository';
-// import { MatchModel } from '../../../../src/domain/models/match';
 import Match from '../../../../src/database/models/Match';
 import { allMatchesMock } from '../../../mocks/match-model-mock';
 import DbFindMatches from '../../../../src/data/usecases/find-matches/db-find-matches';
