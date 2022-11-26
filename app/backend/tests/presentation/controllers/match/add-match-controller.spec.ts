@@ -10,6 +10,7 @@ import {
   missingAwayTeamGoalsParamHttpRequest,
   sameTeamHttpRequest,
   invalidHomeTeamHttpRequest,
+  invalidAwayTeamHttpRequest,
 } from '../../../mocks/match-model-mock';
 import { FindTeam } from '../../../../src/domain/usecases/find-teams';
 import { TeamModel } from '../../../../src/domain/models/team';
@@ -112,6 +113,17 @@ describe('AddMatchController', () => {
       const { sut, findTeamStub } = makeSut();
       jest.spyOn(findTeamStub, 'find').mockResolvedValueOnce(undefined);
       const httpResponse = await sut.handle(invalidHomeTeamHttpRequest);
+      expect(httpResponse.statusCode).toBe(404);
+      expect(httpResponse.body)
+        .toEqual({ message: 'There is no team with such id!' });
+    });
+
+    it('Should return not found awayTeam has no match in the database', async () => {
+      const { sut, findTeamStub } = makeSut();
+      jest.spyOn(findTeamStub, 'find')
+        .mockResolvedValueOnce(teamMock)
+        .mockResolvedValueOnce(undefined);
+      const httpResponse = await sut.handle(invalidAwayTeamHttpRequest);
       expect(httpResponse.statusCode).toBe(404);
       expect(httpResponse.body)
         .toEqual({ message: 'There is no team with such id!' });
