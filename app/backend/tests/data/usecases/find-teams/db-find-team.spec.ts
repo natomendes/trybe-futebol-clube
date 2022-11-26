@@ -5,7 +5,7 @@ import { teamMock } from '../../../mocks/team-model-mock'
 
 const makeFindTeamRepositoryStub = (): FindTeamRepository => {
   class FindTeamRepositoryStub implements FindTeamRepository {
-    async find(): Promise<TeamModel | undefined> {
+    async findOne(): Promise<TeamModel | undefined> {
       return teamMock;
     }
   }
@@ -29,7 +29,7 @@ const makeSut = (): SutTypes => {
 describe('DbFindTeams', () => {
   it('Should throw if FindTeamRepository throws', async () => {
     const { sut, findTeamRepositoryStub } = makeSut();
-    jest.spyOn(findTeamRepositoryStub, 'find')
+    jest.spyOn(findTeamRepositoryStub, 'findOne')
       .mockReturnValueOnce(new Promise((_res, rej) => {
         rej(new Error());
       }));
@@ -39,7 +39,7 @@ describe('DbFindTeams', () => {
 
   it('Should return undefined if no team is found', async () => {
     const { sut, findTeamRepositoryStub } = makeSut();
-    jest.spyOn(findTeamRepositoryStub, 'find')
+    jest.spyOn(findTeamRepositoryStub, 'findOne')
       .mockResolvedValueOnce(undefined);
     const team = await sut.find('valid_id');
     expect(team).toBeUndefined();
