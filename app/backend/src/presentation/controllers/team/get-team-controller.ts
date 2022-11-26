@@ -12,6 +12,6 @@ export default class GetTeamController implements Controller {
     const team = await this.findTeam.find(id);
     if (!team) return notFound(new InvalidParamError('Team not found'));
 
-    return ok({ id: 5, teamName: 'Cruzeiro' });
+    return ok(team);
   }
 }
