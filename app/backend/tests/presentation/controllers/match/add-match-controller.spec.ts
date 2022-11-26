@@ -5,6 +5,7 @@ import {
   invalidTokenHttpRequest,
   missingHomeTeamParamHttpRequest,
   missingTokenHttpRequest,
+  missingAwayTeamParamHttpRequest,
 } from '../../../mocks/match-model-mock';
 const makeTokenValidatorStub = (): TokenValidator => {
   class TokenValidatorStub implements TokenValidator {
@@ -51,6 +52,13 @@ describe('AddMatchController', () => {
   it('Should return bad request if homeTeam is not provided', async () => {
     const { sut } = makeSut();
     const httpResponse = await sut.handle(missingHomeTeamParamHttpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
+  });
+
+  it('Should return bad request if awayTeam is not provided', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle(missingAwayTeamParamHttpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
   });
