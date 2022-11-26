@@ -12,9 +12,10 @@ export default class GetMatchesController implements Controller {
     private findMatches: FindMatches,
   ) {}
 
-  async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const matches = await this.findMatches.find();
+      const { query } = httpRequest;
+      const matches = await this.findMatches.find(query?.inProgress);
       return ok(matches);
     } catch (error) {
       return serverError(new ServerError());
