@@ -1,6 +1,6 @@
 import { FindMatchesRepository } from '../../../../src/data/protocols/find-matches-repository';
 import Match from '../../../../src/database/models/Match';
-import { allMatchesMock } from '../../../mocks/match-model-mock';
+import { allMatchesMock, matchesInProgressMock } from '../../../mocks/match-model-mock';
 import DbFindMatches from '../../../../src/data/usecases/find-matches/db-find-matches';
 
 const makeFindMatchesRepositoryStub = (): FindMatchesRepository => {
@@ -34,6 +34,14 @@ describe('DbFindMatches', () => {
       .mockRejectedValueOnce(new Error());
     const promise = sut.find();
     await expect(promise).rejects.toThrow();
+  });
+
+  it('Should return matches filtered if inProgress is provided', async () => {
+    const { sut, findMatchesRepositoryStub } = makeSut();
+    jest.spyOn(findMatchesRepositoryStub, 'findAll')
+      .mockResolvedValueOnce(matchesInProgressMock as any)
+    const matches = await sut.find('true');
+    expect(matches).toEqual(matchesInProgressMock);
   });
 
   it('Should return all matches on success', async () => {
