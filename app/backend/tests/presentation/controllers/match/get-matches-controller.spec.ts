@@ -1,10 +1,12 @@
-import { FindMatches, MatchModel } from '../../../../src/presentation/controllers/match/match-protocols'
-import { allMatchesMock } from '../../../mocks/match-model-mock'
-import GetMatchesController from '../../../../src/presentation/controllers/match/get-matches-controller'
+import { FindMatches, MatchModel } from '../../../../src/presentation/controllers/match/match-protocols';
+import { allMatchesMock } from '../../../mocks/match-model-mock';
+import GetMatchesController from '../../../../src/presentation/controllers/match/get-matches-controller';
+import Match from '../../../../src/database/models/Match';
+
 const makeFindMatchesStub = (): FindMatches => {
   class FindMatchesStub implements FindMatches {
-    async find(): Promise<MatchModel[]> {
-      return allMatchesMock;
+    async find(): Promise<Match[]> {
+      return allMatchesMock as any;
     }
   }
 

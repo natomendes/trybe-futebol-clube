@@ -1,13 +1,14 @@
 import { FindMatches } from '../../../domain/usecases/find-matches';
 import { FindMatchesRepository } from '../../protocols/find-matches-repository';
-import { MatchModel } from '../../../domain/models/match';
+// import { MatchModel } from '../../../domain/models/match';
+import Match from '../../../database/models/Match';
 
 export default class DbFindMatches implements FindMatches {
   constructor(
     private findMatchesRepository: FindMatchesRepository,
   ) {}
 
-  async find(): Promise<MatchModel[]> {
+  async find(): Promise<Match[]> {
     return this.findMatchesRepository.findAll();
   }
 }

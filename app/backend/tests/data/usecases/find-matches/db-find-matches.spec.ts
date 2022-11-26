@@ -1,12 +1,13 @@
 import { FindMatchesRepository } from '../../../../src/data/protocols/find-matches-repository';
-import { MatchModel } from '../../../../src/domain/models/match';
+// import { MatchModel } from '../../../../src/domain/models/match';
+import Match from '../../../../src/database/models/Match';
 import { allMatchesMock } from '../../../mocks/match-model-mock';
 import DbFindMatches from '../../../../src/data/usecases/find-matches/db-find-matches';
 
 const makeFindMatchesRepositoryStub = (): FindMatchesRepository => {
   class FindMatchesRepositoryStub implements FindMatchesRepository {
-    async findAll(): Promise<MatchModel[]> {
-      return allMatchesMock;
+    async findAll(): Promise<Match[]> {
+      return allMatchesMock as any;
     }
   }
 

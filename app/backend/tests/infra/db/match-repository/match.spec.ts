@@ -18,6 +18,14 @@ describe('MatchRepository', () => {
       const matches = await sut.findAll();
       expect(matches).toEqual([]);
     });
+
+    it('Should return all matches on success', async () => {
+      const sut = new MatchRepository();
+      jest.spyOn(Match, 'findAll')
+        .mockResolvedValueOnce(allMatchesMock as any);
+      const matches = await sut.findAll();
+      expect(matches).toEqual(allMatchesMock);
+    });
   });
   
 });
