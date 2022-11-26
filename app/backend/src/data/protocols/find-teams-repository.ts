@@ -5,5 +5,5 @@ export interface FindTeamsRepository {
 }
 
 export interface FindTeamRepository {
-  find(id: string): Promise<TeamModel | undefined>
+  findOne(id: string): Promise<TeamModel | undefined>
 }
