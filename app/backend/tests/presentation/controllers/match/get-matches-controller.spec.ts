@@ -35,4 +35,12 @@ describe('GetMatchesController', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual({ message: 'Internal server error'})
   });
+
+  it('Should return all teams on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {};
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual(allMatchesMock);
+  });
 });
