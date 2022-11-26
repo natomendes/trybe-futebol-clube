@@ -4,6 +4,7 @@ import { Controller, HttpRequest } from '../../presentation/controllers/sign-in/
 const adaptRoute = (controller: Controller) => async (req: Request, res: Response) => {
   const httpRequest: HttpRequest = {
     headers: req.headers,
+    params: req.params,
     body: req.body,
   };
   const httpResponse = await controller.handle(httpRequest);
