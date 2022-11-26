@@ -1,5 +1,5 @@
 import { FindMatches, MatchModel } from '../../../../src/presentation/controllers/match/match-protocols';
-import { allMatchesMock } from '../../../mocks/match-model-mock';
+import { allMatchesMock, matchesInProgressMock } from '../../../mocks/match-model-mock';
 import GetMatchesController from '../../../../src/presentation/controllers/match/get-matches-controller';
 import Match from '../../../../src/database/models/Match';
 
@@ -36,6 +36,19 @@ describe('GetMatchesController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual({ message: 'Internal server error'})
+  });
+
+  it('Should return all matches in progress if query passed on the url is ?inProgress=true', async () => {
+    const { sut, findMatchesStub } = makeSut();
+    jest.spyOn(findMatchesStub, 'find').mockResolvedValueOnce(matchesInProgressMock as any);
+    const httpRequest = {
+      query: {
+        inProgress: 'true',
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual(matchesInProgressMock);
   });
 
   it('Should return all teams on success', async () => {
