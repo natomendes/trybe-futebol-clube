@@ -1,6 +1,17 @@
 import { JwtPayload } from 'jsonwebtoken';
-import MissingParamError, { InvalidTokenError, MissingTokenError, ServerError } from '../../errors';
-import { unauthorized, ok, serverError, badRequest } from '../../helpers/http-helpers';
+import MissingParamError, {
+  InvalidParamError,
+  InvalidTokenError,
+  MissingTokenError,
+  ServerError,
+} from '../../errors';
+import {
+  unauthorized,
+  ok,
+  serverError,
+  badRequest,
+  unprocessableEntity,
+} from '../../helpers/http-helpers';
 import {
   Controller,
   TokenValidator,
@@ -40,7 +51,12 @@ export default class AddMatchController implements Controller {
       if (!token) return badRequest(new MissingTokenError());
       const areParamsValid = this.validateParams(httpRequest.body);
       if (!areParamsValid) return badRequest(new MissingParamError('Invalid request body'));
-
+      const { homeTeam, awayTeam } = httpRequest.body;
+      if (homeTeam === awayTeam) {
+        return unprocessableEntity(
+          new InvalidParamError('It is not possible to create a match with two equal teams'),
+        );
+      }
       return ok(token);
     } catch (error) {
       if (error instanceof Error && error.name === 'TokenExpiredError') {

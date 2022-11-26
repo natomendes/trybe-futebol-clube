@@ -21,6 +21,13 @@ export const notFound = (error: Error): HttpResponse => ({
   },
 });
 
+export const unprocessableEntity = (error: Error): HttpResponse => ({
+  statusCode: 422,
+  body: {
+    message: error.message,
+  },
+});
+
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
   body: {
