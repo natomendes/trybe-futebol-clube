@@ -51,18 +51,18 @@ describe('GetTeamController', () => {
     expect(httpResponse.body).toEqual({ message: 'Team not found'});
   });
 
-  // it('Should return a server error if FindTeam throws', async () => {
-  //   const { sut, findTeamStub } = makeSut();
-  //   jest.spyOn(findTeamStub, 'find').mockImplementationOnce(() => { throw new Error()});
-  //   const httpRequest = {
-  //     params: {
-  //       id: 'no_team_id',
-  //     }
-  //   }
-  //   const httpResponse = await sut.handle(httpRequest);
-  //   expect(httpResponse.statusCode).toBe(500);
-  //   expect(httpResponse.body).toEqual({ message: 'Internal server error'});
-  // });
+  it('Should return a server error if FindTeam throws', async () => {
+    const { sut, findTeamStub } = makeSut();
+    jest.spyOn(findTeamStub, 'find').mockImplementationOnce(() => { throw new Error()});
+    const httpRequest = {
+      params: {
+        id: 'no_team_id',
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual({ message: 'Internal server error'});
+  });
 
   it('Should return a team on success', async () => {
     const { sut, findTeamStub } = makeSut();
