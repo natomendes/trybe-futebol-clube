@@ -84,6 +84,13 @@ export const matchesNotInProgress = [
     }
   }];
 
+export const validBodyRequest = {
+    homeTeam: '16',
+    awayTeam: '8',
+    homeTeamGoals: '2',
+    awayTeamGoals: '2',
+};
+
 export const invalidTokenHttpRequest = {
   headers: { 
     authorization: 'invalid_token'

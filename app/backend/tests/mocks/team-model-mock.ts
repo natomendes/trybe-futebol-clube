@@ -1,7 +1,12 @@
 export const teamMock = {
-  "id": 1,
-  "teamName": "Avaí/Kindermann"
-}
+  id: 1,
+  teamName: "Avaí/Kindermann"
+};
+
+export const teamMock2 = {
+  id: 2,
+  teamName: "Bahia"
+};
 
 export const getTeamsMock = [
   {

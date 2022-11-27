@@ -8,11 +8,11 @@ import MissingParamError, {
 } from '../../errors';
 import {
   unauthorized,
-  ok,
   serverError,
   badRequest,
   unprocessableEntity,
   notFound,
+  created,
 } from '../../helpers/http-helpers';
 import { FindTeam } from '../team/get-teams-protocols';
 import {
@@ -60,27 +60,27 @@ export default class AddMatchController implements Controller {
     return !!homeTeamReturn && !!awayTeamReturn;
   }
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle({ headers: { authorization }, body }: HttpRequest): Promise<HttpResponse> {
     try {
-      const token = this.validateToken(httpRequest.headers.authorization);
-      if (!token) return badRequest(new MissingTokenError());
+      if (!this.validateToken(authorization)) return badRequest(new MissingTokenError());
 
-      const areParamsValid = this.validateParams(httpRequest.body);
+      const areParamsValid = this.validateParams(body);
       if (!areParamsValid) return badRequest(new MissingParamError('Invalid request body'));
 
-      const { homeTeam, awayTeam } = httpRequest.body;
+      const { homeTeam, awayTeam } = body;
       if (homeTeam === awayTeam) return unprocessableEntity(new InvalidParamError(this.sameTeam));
 
-      if (await this.validateTeams(homeTeam, awayTeam)) {
+      if (!await this.validateTeams(homeTeam, awayTeam)) {
         return notFound(new InvalidParamError('There is no team with such id!'));
       }
+      const match = await this.addMatch.add(body);
 
-      const match = await this.addMatch.add(httpRequest.body);
-
-      return ok(match);
+      return created(match);
     } catch (error) {
       if (error instanceof Error
-        && error.name === 'TokenExpiredError') return unauthorized(new InvalidTokenError());
+        && (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError')) {
+        return unauthorized(new InvalidTokenError());
+      }
 
       return serverError(new ServerError());
     }
