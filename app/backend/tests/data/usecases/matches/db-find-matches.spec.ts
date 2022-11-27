@@ -1,7 +1,7 @@
 import { FindMatchesRepository } from '../../../../src/data/protocols/find-matches-repository';
 import Match from '../../../../src/database/models/Match';
 import { allMatchesMock, matchesInProgressMock } from '../../../mocks/match-model-mock';
-import DbFindMatches from '../../../../src/data/usecases/find-matches/db-find-matches';
+import DbFindMatches from '../../../../src/data/usecases/matches/db-find-matches';
 
 const makeFindMatchesRepositoryStub = (): FindMatchesRepository => {
   class FindMatchesRepositoryStub implements FindMatchesRepository {
