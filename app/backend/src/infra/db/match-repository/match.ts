@@ -19,6 +19,7 @@ export default class MatchRepository implements FindMatchesRepository, AddMatchR
       awayTeamGoals: Number(matchData.awayTeamGoals),
       inProgress: true,
     };
+
     return this.model.create(matchMap);
   }
 
@@ -32,6 +33,7 @@ export default class MatchRepository implements FindMatchesRepository, AddMatchR
           { model: Team, as: 'teamAway', attributes: ['teamName'] },
         ],
       });
+
       return matches;
     }
     const matches = await this.model.findAll({
@@ -39,6 +41,7 @@ export default class MatchRepository implements FindMatchesRepository, AddMatchR
         { model: Team, as: 'teamAway', attributes: ['teamName'] },
       ],
     });
+
     return matches;
   }
 }
