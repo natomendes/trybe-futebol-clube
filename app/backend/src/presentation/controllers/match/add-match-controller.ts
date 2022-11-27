@@ -1,4 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
+import { AddMatch } from '../../../domain/usecases/add-match';
 import MissingParamError, {
   InvalidParamError,
   InvalidTokenError,
@@ -34,6 +35,7 @@ export default class AddMatchController implements Controller {
   constructor(
     private readonly tokenValidator: TokenValidator,
     private readonly findTeam: FindTeam,
+    private readonly addMatch: AddMatch,
   ) {}
 
   private validateToken(token: string | undefined): JwtPayload | undefined {
@@ -62,17 +64,24 @@ export default class AddMatchController implements Controller {
     try {
       const token = this.validateToken(httpRequest.headers.authorization);
       if (!token) return badRequest(new MissingTokenError());
+
       const areParamsValid = this.validateParams(httpRequest.body);
       if (!areParamsValid) return badRequest(new MissingParamError('Invalid request body'));
+
       const { homeTeam, awayTeam } = httpRequest.body;
       if (homeTeam === awayTeam) return unprocessableEntity(new InvalidParamError(this.sameTeam));
+
       if (!await this.validateTeams(homeTeam, awayTeam)) {
         return notFound(new InvalidParamError('There is no team with such id!'));
       }
-      return ok(token);
+
+      const match = await this.addMatch.add(httpRequest.body);
+
+      return ok(match);
     } catch (error) {
       if (error instanceof Error
         && error.name === 'TokenExpiredError') return unauthorized(new InvalidTokenError());
+
       return serverError(new ServerError());
     }
   }
