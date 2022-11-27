@@ -20,6 +20,6 @@ export default class UpdateMatchController implements Controller {
 
     if (!hasUpdate) return notFound(new InvalidParamError('Match not found'));
 
-    return ok('test');
+    return ok({ message: 'Match updated with success' });
   }
 }
