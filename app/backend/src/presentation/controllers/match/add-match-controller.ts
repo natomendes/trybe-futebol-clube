@@ -71,7 +71,7 @@ export default class AddMatchController implements Controller {
       const { homeTeam, awayTeam } = httpRequest.body;
       if (homeTeam === awayTeam) return unprocessableEntity(new InvalidParamError(this.sameTeam));
 
-      if (!await this.validateTeams(homeTeam, awayTeam)) {
+      if (await this.validateTeams(homeTeam, awayTeam)) {
         return notFound(new InvalidParamError('There is no team with such id!'));
       }
 
