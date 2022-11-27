@@ -52,4 +52,14 @@ describe('DbUpdateMatch', () => {
     });
     await expect(promise).rejects.toThrow();
   });
+
+  it('Should return the affectedRows on success', async () => {
+    const { sut } = makeSut();
+    const affectedRows = await sut.update({
+      id: '1',
+      homeTeamGoals: '1',
+      awayTeamGoals: '1',
+    });
+    expect(affectedRows).toBe(1);
+  });
 });
