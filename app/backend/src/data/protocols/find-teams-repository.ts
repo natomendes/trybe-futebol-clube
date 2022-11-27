@@ -1,4 +1,4 @@
-import { TeamModel } from '../../domain/models/team';
+import { TeamModel } from '../../domain/models';
 
 export interface FindTeamsRepository {
   findAll(): Promise<TeamModel[]>
