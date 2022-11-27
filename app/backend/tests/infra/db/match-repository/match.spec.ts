@@ -49,13 +49,13 @@ describe('MatchRepository', () => {
       expect(createSpy).toHaveBeenCalledWith(matchMapMock);
     });
 
-    // it('Should return the match created on success', async () => {
-    //   const sut = new MatchRepository();
-    //   jest.spyOn(Match, 'create')
-    //     .mockResolvedValueOnce(matchMock);
-    //   const match = await sut.add(addMatchMock);
-    //   expect(match).toEqual(matchMock);
-    // });
+    it('Should return the match created on success', async () => {
+      const sut = new MatchRepository();
+      jest.spyOn(Match, 'create')
+        .mockResolvedValueOnce(matchMock);
+      const match = await sut.add(addMatchMock);
+      expect(match).toEqual(matchMock);
+    });
   });
   
 });
