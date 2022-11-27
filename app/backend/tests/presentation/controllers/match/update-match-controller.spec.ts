@@ -30,7 +30,7 @@ describe('UpdateMatchController', () => {
     const { sut } = makeSut();
     const httpRequest = {
       params: {
-        id: '1',
+        id: 'valid_id',
       },
       body: {
         awayTeamGoals: 1,
@@ -45,7 +45,7 @@ describe('UpdateMatchController', () => {
     const { sut } = makeSut();
     const httpRequest = {
       params: {
-        id: '1',
+        id: 'valid_id',
       },
       body: {
         homeTeamGoals: 1,
@@ -70,5 +70,21 @@ describe('UpdateMatchController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual({ message: 'Invalid request body'});
+  });
+
+  it('Should return 200 and "Match updated with success" on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      params: {
+        id: 'valid_id',
+      },
+      body: {
+        homeTeamGoals: 1,
+        awayTeamGoals: 1,
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({ message: 'Match updated with success'});
   });
 });
