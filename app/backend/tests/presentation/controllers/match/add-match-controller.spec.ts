@@ -1,4 +1,4 @@
-import { TokenValidator } from '../../../../src/presentation/controllers/match/match-protocols';
+import { MatchModel, TokenValidator } from '../../../../src/presentation/controllers/match/match-protocols';
 import { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 import AddMatchController from '../../../../src/presentation/controllers/match/add-match-controller';
 import {
@@ -11,10 +11,12 @@ import {
   sameTeamHttpRequest,
   invalidHomeTeamHttpRequest,
   invalidAwayTeamHttpRequest,
+  matchMock,
 } from '../../../mocks/match-model-mock';
 import { FindTeam } from '../../../../src/domain/usecases/find-teams';
 import { TeamModel } from '../../../../src/domain/models/team';
 import { teamMock } from '../../../mocks/team-model-mock';
+import { AddMatch, AddMatchModel } from '../../../../src/domain/usecases/add-match'
 
 const makeTokenValidatorStub = (): TokenValidator => {
   class TokenValidatorStub implements TokenValidator {
@@ -36,20 +38,36 @@ const makeFindTeamStub = (): FindTeam => {
   return new FindTeamStub();
 }
 
+const makeAddMatchStub = (): AddMatch => {
+  class AddMatchStub implements AddMatch {
+    async add(matchData: AddMatchModel): Promise<MatchModel> {
+      return matchMock;
+    }
+  }
+  return new AddMatchStub();
+}
+
 interface SutTypes {
   sut: AddMatchController
   tokenValidatorStub: TokenValidator
   findTeamStub: FindTeam
+  addMatchStub: AddMatch
 }
 
 const makeSut = (): SutTypes => {
+  const addMatchStub = makeAddMatchStub();
   const tokenValidatorStub = makeTokenValidatorStub();
   const findTeamStub = makeFindTeamStub();
-  const sut = new AddMatchController(tokenValidatorStub, findTeamStub);
+  const sut = new AddMatchController(
+    tokenValidatorStub,
+    findTeamStub,
+    addMatchStub
+  );
   return {
     sut,
     tokenValidatorStub,
-    findTeamStub
+    findTeamStub,
+    addMatchStub
   }
 }
 
@@ -129,5 +147,11 @@ describe('AddMatchController', () => {
         .toEqual({ message: 'There is no team with such id!' });
     });
   });
-  
+  it('Should return the match added on success', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle(invalidAwayTeamHttpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body)
+      .toEqual(matchMock);
+  });
 });
