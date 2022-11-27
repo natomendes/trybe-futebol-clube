@@ -36,9 +36,15 @@ describe('DbAddMatch', () => {
 
   it('Should throw if AddMatchRepository throws', async () => {
     const { sut, addMatchRepositoryStub } = makeSut();
-    const addSpy = jest.spyOn(addMatchRepositoryStub, 'add')
+    jest.spyOn(addMatchRepositoryStub, 'add')
       .mockRejectedValueOnce(new Error());
     const promise = sut.add(addMatchMock);
-    expect(promise).rejects.toThrow();
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('Should return the account added on success', async () => {
+    const { sut } = makeSut();
+    const match = await sut.add(addMatchMock);
+    expect(match).toEqual(matchMock);
   });
 });
