@@ -1,6 +1,12 @@
 import Match from '../../../../src/database/models/Match';
 import MatchRepository from '../../../../src/infra/db/match-repository/match';
-import { allMatchesMock, matchesInProgressMock } from '../../../mocks/match-model-mock';
+import {
+  addMatchMock,
+  allMatchesMock,
+  matchesInProgressMock,
+  matchMapMock,
+  matchMock
+} from '../../../mocks/match-model-mock';
 
 describe('MatchRepository', () => {
   it('Should throw if Match throws', async () => {
@@ -34,6 +40,22 @@ describe('MatchRepository', () => {
       const matches = await sut.findAll();
       expect(matches).toEqual(allMatchesMock);
     });
+  });
+  describe('add method', () => {
+    it('Should call Match.create with correct values', async () => {
+      const sut = new MatchRepository();
+      const createSpy = jest.spyOn(Match, 'create');
+      await sut.add(addMatchMock);
+      expect(createSpy).toHaveBeenCalledWith(matchMapMock);
+    });
+
+    // it('Should return the match created on success', async () => {
+    //   const sut = new MatchRepository();
+    //   jest.spyOn(Match, 'create')
+    //     .mockResolvedValueOnce(matchMock);
+    //   const match = await sut.add(addMatchMock);
+    //   expect(match).toEqual(matchMock);
+    // });
   });
   
 });
