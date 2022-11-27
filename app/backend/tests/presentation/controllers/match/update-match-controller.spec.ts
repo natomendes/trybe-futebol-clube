@@ -25,5 +25,20 @@ describe('UpdateMatchController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual({ message: 'Invalid request body'});
-  })
+  });
+
+  it('Should return bad request if awayTeamGoals is not provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      params: {
+        id: '1',
+      },
+      body: {
+        homeTeamGoals: 1,
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ message: 'Invalid request body'});
+  });
 });
