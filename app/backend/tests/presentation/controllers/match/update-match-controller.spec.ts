@@ -1,14 +1,28 @@
+import { UpdateMatchModel, UpdateMatch } from '../../../../src/presentation/controllers/match/match-protocols';
 import UpdateMatchController from '../../../../src/presentation/controllers/match/update-match-controller';
+
+const makeUpdateMatchStub = (): UpdateMatch => {
+  class UpdateMatchStub implements UpdateMatch {
+    async update(updateMatchData: UpdateMatchModel): Promise<number> {
+      return 1;
+    }
+  }
+
+  return new UpdateMatchStub();
+}
 
 interface SutTypes {
   sut: UpdateMatchController
+  updateMatchStub: UpdateMatch
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new UpdateMatchController();
+  const updateMatchStub = makeUpdateMatchStub();
+  const sut = new UpdateMatchController(updateMatchStub);
   return {
-    sut
-  }
+    sut,
+    updateMatchStub
+  };
 }
 
 describe('UpdateMatchController', () => {
@@ -32,6 +46,22 @@ describe('UpdateMatchController', () => {
     const httpRequest = {
       params: {
         id: '1',
+      },
+      body: {
+        homeTeamGoals: 1,
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ message: 'Invalid request body'});
+  });
+
+  it('Should return not found if no match is found with id provided', async () => {
+    const { sut, updateMatchStub } = makeSut();
+    jest.spyOn(updateMatchStub, 'update').mockResolvedValueOnce(0);
+    const httpRequest = {
+      params: {
+        id: 'invalid_id',
       },
       body: {
         homeTeamGoals: 1,
