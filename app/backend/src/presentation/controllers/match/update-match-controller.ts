@@ -4,7 +4,7 @@ import { HttpRequest, HttpResponse } from '../sign-in/signin-protocols';
 import { Controller } from './match-protocols';
 
 export default class UpdateMatchController implements Controller {
-  private readonly requiredFields = ['homeTeamGoals'];
+  private readonly requiredFields = ['homeTeamGoals', 'awayTeamGoals'];
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     for (let i = 0; i < this.requiredFields.length; i += 1) {
       if (!httpRequest?.body?.[this.requiredFields[i]]) {
