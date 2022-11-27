@@ -40,4 +40,16 @@ describe('DbUpdateMatch', () => {
       awayTeamGoals: '1',
     });
   });
+
+  it('Should throw if UpdateMatchRepository throws', async () => {
+    const { sut, updateMatchRepositoryStub } = makeSut();
+    jest.spyOn(updateMatchRepositoryStub, 'update')
+      .mockRejectedValueOnce(new Error());
+    const promise = sut.update({
+      id: '1',
+      homeTeamGoals: '1',
+      awayTeamGoals: '1',
+    });
+    await expect(promise).rejects.toThrow();
+  });
 });
