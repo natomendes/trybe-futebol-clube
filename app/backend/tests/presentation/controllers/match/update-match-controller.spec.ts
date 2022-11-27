@@ -72,6 +72,26 @@ describe('UpdateMatchController', () => {
     expect(httpResponse.body).toEqual({ message: 'Invalid request body'});
   });
 
+  it('Should call UpdateMacth with correct values', async () => {
+    const { sut, updateMatchStub } = makeSut();
+    const updateSpy = jest.spyOn(updateMatchStub, 'update');
+    const httpRequest = {
+      params: {
+        id: 'valid_id',
+      },
+      body: {
+        homeTeamGoals: 1,
+        awayTeamGoals: 1,
+      }
+    };
+    await sut.handle(httpRequest);
+    expect(updateSpy).toHaveBeenCalledWith({
+      id: 'valid_id',
+      homeTeamGoals: 1,
+      awayTeamGoals: 1,
+    });
+  });
+
   it('Should return 200 and "Match updated with success" on success', async () => {
     const { sut } = makeSut();
     const httpRequest = {
