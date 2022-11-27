@@ -1,5 +1,5 @@
 import MatchRepository from '../../infra/db/match-repository/match';
-import DbFindMatches from '../../data/usecases/find-matches/db-find-matches';
+import DbFindMatches from '../../data/usecases/matches/db-find-matches';
 import GetMatchesController from '../../presentation/controllers/match/get-matches-controller';
 
 const makeGetMatchesController = (): GetMatchesController => {
