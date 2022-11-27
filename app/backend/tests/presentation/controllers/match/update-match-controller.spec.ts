@@ -92,6 +92,24 @@ describe('UpdateMatchController', () => {
     });
   });
 
+  it('Should return server error if UpdateMatch throws', async () => {
+    const { sut, updateMatchStub } = makeSut();
+    jest.spyOn(updateMatchStub, 'update')
+      .mockRejectedValueOnce(new Error());
+    const httpRequest = {
+      params: {
+        id: 'valid_id',
+      },
+      body: {
+        homeTeamGoals: 1,
+        awayTeamGoals: 1,
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual({ message: 'Internal server error'});
+  });
+
   it('Should return 200 and "Match updated with success" on success', async () => {
     const { sut } = makeSut();
     const httpRequest = {
