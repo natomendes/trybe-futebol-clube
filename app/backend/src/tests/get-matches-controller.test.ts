@@ -8,7 +8,7 @@ import Match from '../database/models/Match';
 
 import { Response } from 'superagent';
 import { allMatchesMock, matchesInProgressMock } from '../../tests/mocks/match-model-mock'
-import DbFindMatches from '../data/usecases/find-matches/db-find-matches'
+import DbFindMatches from '../data/usecases/matches/db-find-matches'
 chai.use(chaiHttp);
 
 const { app } = new App();

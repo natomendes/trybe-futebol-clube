@@ -8,7 +8,6 @@ import Team from '../database/models/Team';
 
 import { Response } from 'superagent';
 import { getTeamsMock } from '../../tests/mocks/team-model-mock'
-import { InvalidParamError, InvalidTokenError, MissingTokenError, ServerError } from '../presentation/errors';
 import DbFindTeams from '../data/usecases/find-teams/db-find-teams'
 chai.use(chaiHttp);
 
