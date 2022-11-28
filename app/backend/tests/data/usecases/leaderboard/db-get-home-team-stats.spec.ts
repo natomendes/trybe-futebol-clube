@@ -52,6 +52,14 @@ describe('DbGetHomeTeamStats', () => {
     await expect(promise).rejects.toThrow();
   });
 
+  it('Should throw if HomeStats throws', async () => {
+    const { sut, homeStatsStub } = makeSut();
+    jest.spyOn(homeStatsStub, 'calculate')
+      .mockImplementationOnce(() => { throw new Error()});
+    const promise = sut.handle();
+    await expect(promise).rejects.toThrow();
+  });
+
   it('Should call HomeStats with correct values', async () => {
     const { sut, homeStatsStub } = makeSut();
     const calculateSpy = jest.spyOn(homeStatsStub, 'calculate');
