@@ -5,7 +5,8 @@ class MatchRepository
 implements
   P.FindMatchesRepository,
   P.AddMatchRepository,
-  P.UpdateMatchRepository {
+  P.UpdateMatchRepository,
+  P.FinishMatchRepository {
   constructor(private model = P.Match) {}
 
   async add(matchData: P.AddMatchModel): Promise<P.MatchModel> {
@@ -50,6 +51,16 @@ implements
     };
 
     const [affectedRows] = await this.model.update(updateInfo, { where: { id } });
+
+    return affectedRows;
+  }
+
+  async finish(matchId: string): Promise<number> {
+    const id = Number(matchId);
+
+    const [affectedRows] = await this.model.update({
+      inProgress: false,
+    }, { where: { id } });
 
     return affectedRows;
   }
