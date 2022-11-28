@@ -1,0 +1,34 @@
+import { FinishMatchRepository } from '../../../../src/data/usecases/matches/match-protocols'
+import DbFinishMatch from '../../../../src/data/usecases/matches/db-finish-match';
+
+const makeFinishMatchRepository = (): FinishMatchRepository => {
+  class FinishMatchRepositoryStub implements FinishMatchRepository {
+    async finish(_id: string): Promise<number> {
+      return 1;
+    }
+  }
+  return new FinishMatchRepositoryStub();
+}
+
+interface SutTypes {
+  sut: DbFinishMatch,
+  finishMatchRepositoryStub: FinishMatchRepository
+}
+
+const makeSut = (): SutTypes => {
+  const finishMatchRepositoryStub = makeFinishMatchRepository();
+  const sut = new DbFinishMatch(finishMatchRepositoryStub);
+  return {
+    sut,
+    finishMatchRepositoryStub
+  }
+}
+
+describe('DbFinishMatch', () => {
+  it('Should call FinishMatchRepository with correct value', async () => {
+    const { sut, finishMatchRepositoryStub } = makeSut();
+    const finishSpy = jest.spyOn(finishMatchRepositoryStub, 'finish');
+    await sut.finish('valid_id');
+    expect(finishSpy).toHaveBeenCalledWith('valid_id');
+  });
+});
