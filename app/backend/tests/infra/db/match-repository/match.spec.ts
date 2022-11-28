@@ -96,8 +96,15 @@ describe('MatchRepository', () => {
       }, {
         where: { id: 1 }
       });
-    });  });
-  
-  
+    });
+
+    it('Should return the number of rows affected on success', async () => {
+      const sut = new MatchRepository();
+      jest.spyOn(Match, 'update')
+        .mockResolvedValueOnce([1])
+      const affectedRows = await sut.finish('valid_id');
+      expect(affectedRows).toBe(1);
+    });
+  });  
   
 });
