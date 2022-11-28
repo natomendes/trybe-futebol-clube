@@ -66,4 +66,10 @@ describe('DbGetHomeTeamStats', () => {
     await sut.handle();
     expect(calculateSpy).toHaveBeenCalledWith(homeTeamDbResult);
   });
+
+  it('Should return home teams stats order by points on success', async () => {
+    const { sut } = makeSut();
+    const homeTeamsStats = await sut.handle();
+    expect(homeTeamsStats).toEqual(homeStatsMock);
+  });
 });
