@@ -1,27 +1,15 @@
 import Match from '../../../database/models/Match';
 import Team from '../../../database/models/Team';
+import { GetHomeMatches } from '../match-repository/match-repository-protocols';
 
-interface Typpp {
-  dataValues: Match
-}
+export default class LeaderboardRepository implements GetHomeMatches {
+  constructor(private model = Team) {}
 
-const getResult = async () => {
-  const result = await Team.findAll({
-    include: [{ model: Match, as: 'teamAway', where: { inProgress: false } }],
-  });
-  console.log('[');
-  result.forEach(({ dataValues }) => {
-    console.log('  {');
-    console.log(`    id: ${dataValues.id},`);
-    console.log(`    teamName: '${dataValues.teamName}',`);
-    console.log('    teamAway: [');
-    dataValues.teamAway.forEach(({ dataValues: data2 }: Typpp) => {
-      console.log('        ', data2, ',');
+  async findHomeMatches(): Promise<Team[]> {
+    const homeMatches = await this.model.findAll({
+      include: [{ model: Match, as: 'teamAway', where: { inProgress: false } }],
     });
-    console.log('    ],');
-    console.log('  },');
-  });
-  console.log(']');
-};
 
-getResult();
+    return homeMatches;
+  }
+}
