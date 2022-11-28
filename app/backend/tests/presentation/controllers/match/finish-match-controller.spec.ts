@@ -36,5 +36,19 @@ describe('FinishMatchController', () => {
     }
     await sut.handle(httpRequest);
     expect(finishSpy).toHaveBeenCalledWith('valid_id');
-  })
+  });
+
+  it('Should return server error if FinishMatch throws', async () => {
+    const { sut, finishMatchStub } = makeSut();
+    jest.spyOn(finishMatchStub, 'finish')
+      .mockRejectedValueOnce(new Error());
+    const httpRequest = {
+      params: {
+        id: 'valid_id'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual({ message: 'Internal server error'});
+  });
 });
