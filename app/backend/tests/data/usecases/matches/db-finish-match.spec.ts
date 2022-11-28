@@ -31,4 +31,12 @@ describe('DbFinishMatch', () => {
     await sut.finish('valid_id');
     expect(finishSpy).toHaveBeenCalledWith('valid_id');
   });
+
+  it('Should throw if FinishMatchRepository throws', async () => {
+    const { sut, finishMatchRepositoryStub } = makeSut();
+    jest.spyOn(finishMatchRepositoryStub, 'finish')
+      .mockRejectedValueOnce(new Error());
+    const promise = sut.finish('valid_id');
+    await expect(promise).rejects.toThrow();
+  });
 });
