@@ -57,5 +57,23 @@ describe('MatchRepository', () => {
       expect(match).toEqual(matchMock);
     });
   });
+  describe('update method', () => {
+    it('Should call Match.update with correct values', async () => {
+      const sut = new MatchRepository();
+      const createSpy = jest.spyOn(Match, 'update');
+      await sut.update({
+        id: '1',
+        homeTeamGoals: '1',
+        awayTeamGoals: '1',
+      });
+      expect(createSpy).toHaveBeenCalledWith({
+        homeTeamGoals: 1,
+        awayTeamGoals: 1
+      }, {
+        where: { id: 1 }
+      });
+    });
+  });
+  
   
 });
