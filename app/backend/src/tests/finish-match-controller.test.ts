@@ -16,6 +16,11 @@ const { expect } = chai;
 describe('GetTeamsController', () => {
   let chaiHttpResponse: Response;
 
+  beforeEach(async () => {
+    // sinon.stub(Match, 'create')
+    //   .resolves(matchMock as Match);
+  })
+
   afterEach(()=>{
     sinon.restore();
   });
@@ -24,55 +29,21 @@ describe('GetTeamsController', () => {
     sinon.stub(Match, 'update').throws();
     chaiHttpResponse = await chai
       .request(app)
-      .patch('/matches/1')
+      .patch('/matches/1/finish')
       .set('authorization', 'valid_token')
-      .send({
-        homeTeamGoals: 1,
-        awayTeamGoals: 1,
-      });
+      .send();
     expect(chaiHttpResponse.status).to.be.equal(500);
     expect(chaiHttpResponse.body)
       .to.be.deep.equal({ message: 'Internal server error'});
-  });
-  
-  it('Should return bad request if homeTeamGoals param is not provided', async () => {
-    sinon.stub(Match, 'update').resolves([1]);
-    chaiHttpResponse = await chai
-      .request(app)
-      .patch('/matches/1')
-      .set('authorization', 'valid_token')
-      .send({
-        awayTeamGoals: 1,
-      });
-    expect(chaiHttpResponse.status).to.be.equal(400);
-    expect(chaiHttpResponse.body)
-      .to.be.deep.equal({ message: 'Invalid request body'});
-  });
-  
-  it('Should return bad request if awayTeamGoals param is not provided', async () => {
-    sinon.stub(Match, 'update').resolves([1]);
-    chaiHttpResponse = await chai
-      .request(app)
-      .patch('/matches/1')
-      .set('authorization', 'valid_token')
-      .send({
-        homeTeamGoals: 1,
-      });
-    expect(chaiHttpResponse.status).to.be.equal(400);
-    expect(chaiHttpResponse.body)
-      .to.be.deep.equal({ message: 'Invalid request body'});
   });
   
   it('Should return not found if no match is found with id provided', async () => {
     sinon.stub(Match, 'update').resolves([0]);
     chaiHttpResponse = await chai
       .request(app)
-      .patch('/matches/invalid-id')
+      .patch('/matches/invalid-id/finish')
       .set('authorization', 'valid_token')
-      .send({
-        homeTeamGoals: 1,
-        awayTeamGoals: 1,
-      });
+      .send();
     expect(chaiHttpResponse.status).to.be.equal(404);
     expect(chaiHttpResponse.body)
       .to.be.deep.equal({ message: 'Match not found'});
@@ -82,15 +53,12 @@ describe('GetTeamsController', () => {
     sinon.stub(Match, 'update').resolves([1]);
     chaiHttpResponse = await chai
       .request(app)
-      .patch('/matches/valid-id')
+      .patch('/matches/valid-id/finish')
       .set('authorization', 'valid_token')
-      .send({
-        homeTeamGoals: 1,
-        awayTeamGoals: 1,
-      });
+      .send();
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body)
-      .to.be.deep.equal({ message: 'Match updated with success'});
+      .to.be.deep.equal({ message: 'Finished'});
   });
 });
 
