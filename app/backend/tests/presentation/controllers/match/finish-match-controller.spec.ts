@@ -51,4 +51,18 @@ describe('FinishMatchController', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual({ message: 'Internal server error'});
   });
+
+  it('Should return not found if no match is found with id provided', async () => {
+    const { sut, finishMatchStub } = makeSut();
+    jest.spyOn(finishMatchStub, 'finish')
+      .mockResolvedValueOnce(0);
+    const httpRequest = {
+      params: {
+        id: 'valid_id'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(404);
+    expect(httpResponse.body).toEqual({ message: 'Match not found'});
+  });
 });
