@@ -65,4 +65,16 @@ describe('FinishMatchController', () => {
     expect(httpResponse.statusCode).toBe(404);
     expect(httpResponse.body).toEqual({ message: 'Match not found'});
   });
+
+  it('Should return 200 and "Finished" on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      params: {
+        id: 'valid_id'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({ message: 'Finished'});
+  });
 });
