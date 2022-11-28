@@ -19,7 +19,7 @@ const { app } = new App();
 
 const { expect } = chai;
 
-describe('GetTeamsController', () => {
+describe('AddMatchController', () => {
   let chaiHttpResponse: Response;
 
   beforeEach(async () => {
