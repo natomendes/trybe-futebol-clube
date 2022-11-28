@@ -1,14 +1,20 @@
 import { MatchModel } from '../../../domain/models/match';
-import { AddMatchModel } from '../../../domain/usecases/add-match';
+import { AddMatchModel, UpdateMatchModel } from '../../../domain/usecases';
 import Match from '../../../database/models/Match';
 import Team from '../../../database/models/Team';
 import {
   FindAllOptions,
   FindMatchesRepository,
-} from '../../../data/protocols/find-matches-repository';
-import { AddMatchRepository } from '../../../data/protocols/add-match-repository';
+  UpdateMatchRepository,
+  AddMatchRepository,
+} from '../../../data/protocols';
 
-export default class MatchRepository implements FindMatchesRepository, AddMatchRepository {
+export default
+class MatchRepository
+implements
+  FindMatchesRepository,
+  AddMatchRepository,
+  UpdateMatchRepository {
   constructor(private model = Match) {}
 
   async add(matchData: AddMatchModel): Promise<MatchModel> {
@@ -43,5 +49,17 @@ export default class MatchRepository implements FindMatchesRepository, AddMatchR
     });
 
     return matches;
+  }
+
+  async update(updateMatchData: UpdateMatchModel): Promise<number> {
+    const id = Number(updateMatchData.id);
+    const updateInfo = {
+      homeTeamGoals: Number(updateMatchData.homeTeamGoals),
+      awayTeamGoals: Number(updateMatchData.awayTeamGoals),
+    };
+
+    const [affectedRows] = await this.model.update(updateInfo, { where: { id } });
+
+    return affectedRows;
   }
 }
