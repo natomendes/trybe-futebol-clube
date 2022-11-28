@@ -73,6 +73,18 @@ describe('MatchRepository', () => {
         where: { id: 1 }
       });
     });
+
+    it('Should return the number of rows affected on success', async () => {
+      const sut = new MatchRepository();
+      jest.spyOn(Match, 'update')
+        .mockResolvedValueOnce([1])
+      const affectedRows = await sut.update({
+        id: '1',
+        homeTeamGoals: '1',
+        awayTeamGoals: '1',
+      });
+      expect(affectedRows).toBe(1);
+    });
   });
   
   
