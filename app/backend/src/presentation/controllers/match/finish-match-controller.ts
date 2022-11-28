@@ -1,5 +1,5 @@
-import { ServerError } from '../../errors';
-import { ok, serverError } from '../../helpers/http-helpers';
+import { InvalidParamError, ServerError } from '../../errors';
+import { notFound, ok, serverError } from '../../helpers/http-helpers';
 import { Controller, FinishMatch, HttpRequest, HttpResponse } from './match-protocols';
 
 export default class FinishMatchController implements Controller {
@@ -8,7 +8,9 @@ export default class FinishMatchController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { id } = httpRequest.params;
-      await this.finishMatch.finish(id);
+      const hasFinish = await this.finishMatch.finish(id);
+
+      if (!hasFinish) return notFound(new InvalidParamError('Match not found'));
 
       return ok({ message: 'Finished' });
     } catch (error) {
