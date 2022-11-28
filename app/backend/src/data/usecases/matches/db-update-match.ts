@@ -1,5 +1,4 @@
-import { UpdateMatch, UpdateMatchModel } from '../../../domain/usecases';
-import { UpdateMatchRepository } from '../../protocols';
+import { UpdateMatch, UpdateMatchModel, UpdateMatchRepository } from './match-protocols';
 
 export default class DbUpdateMatch implements UpdateMatch {
   constructor(private readonly updateMatchRepository: UpdateMatchRepository) {}

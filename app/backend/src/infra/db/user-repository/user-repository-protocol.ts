@@ -1,4 +1,8 @@
+import User from '../../../database/models/User';
+
 export * from '../../../domain/models';
-export * from '../../../domain/usecases';
-export * from '../../protocols';
 export * from '../../../data/protocols';
+
+export {
+  User,
+};

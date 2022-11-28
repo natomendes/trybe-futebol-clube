@@ -1,6 +1,4 @@
-import { FindTeamRepository } from '../../protocols/find-teams-repository';
-import { TeamModel } from '../../../domain/models/team';
-import { FindTeam } from '../../../domain/usecases/find-teams';
+import { FindTeamRepository, TeamModel, FindTeam } from './find-teams-protocols';
 
 export default class DbFindTeam implements FindTeam {
   constructor(private findTeamRepository: FindTeamRepository) {}

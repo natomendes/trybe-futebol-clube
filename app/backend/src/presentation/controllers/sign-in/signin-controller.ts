@@ -1,4 +1,4 @@
-import MissingParamError, { InvalidParamError, ServerError } from '../../errors';
+import { MissingParamError, InvalidParamError, ServerError } from '../../errors';
 import { badRequest, serverError, unauthorized, ok } from '../../helpers/http-helpers';
 import {
   Controller,
@@ -7,7 +7,8 @@ import {
   HttpRequest,
   HttpResponse,
   TokenGenerator,
-  Encrypter } from './signin-protocols';
+  Encrypter,
+} from './signin-protocols';
 
 export default class SignInController implements Controller {
   constructor(

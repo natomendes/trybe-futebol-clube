@@ -1,7 +1,6 @@
-import MissingParamError, { InvalidParamError, ServerError } from '../../errors';
+import { MissingParamError, InvalidParamError, ServerError } from '../../errors';
 import { badRequest, notFound, ok, serverError } from '../../helpers/http-helpers';
-import { HttpRequest, HttpResponse } from '../sign-in/signin-protocols';
-import { Controller, UpdateMatch } from './match-protocols';
+import { Controller, UpdateMatch, HttpRequest, HttpResponse } from './match-protocols';
 
 export default class UpdateMatchController implements Controller {
   private readonly requiredFields = ['homeTeamGoals', 'awayTeamGoals'];

@@ -1,23 +1,14 @@
-import { MatchModel } from '../../../domain/models/match';
-import { AddMatchModel, UpdateMatchModel } from '../../../domain/usecases';
-import Match from '../../../database/models/Match';
-import Team from '../../../database/models/Team';
-import {
-  FindAllOptions,
-  FindMatchesRepository,
-  UpdateMatchRepository,
-  AddMatchRepository,
-} from '../../../data/protocols';
+import * as P from './match-repository-protocols';
 
 export default
 class MatchRepository
 implements
-  FindMatchesRepository,
-  AddMatchRepository,
-  UpdateMatchRepository {
-  constructor(private model = Match) {}
+  P.FindMatchesRepository,
+  P.AddMatchRepository,
+  P.UpdateMatchRepository {
+  constructor(private model = P.Match) {}
 
-  async add(matchData: AddMatchModel): Promise<MatchModel> {
+  async add(matchData: P.AddMatchModel): Promise<P.MatchModel> {
     const matchMap = {
       homeTeam: Number(matchData.homeTeam),
       homeTeamGoals: Number(matchData.homeTeamGoals),
@@ -29,29 +20,29 @@ implements
     return this.model.create(matchMap);
   }
 
-  async findAll(Options?: FindAllOptions): Promise<Match[]> {
+  async findAll(Options?: P.FindAllOptions): Promise<P.Match[]> {
     if (Options) {
       const { inProgress } = Options;
       const boolInProgress = inProgress?.toLowerCase() === 'true';
       const matches = await this.model.findAll({
         where: { inProgress: boolInProgress },
-        include: [{ model: Team, as: 'teamHome', attributes: ['teamName'] },
-          { model: Team, as: 'teamAway', attributes: ['teamName'] },
+        include: [{ model: P.Team, as: 'teamHome', attributes: ['teamName'] },
+          { model: P.Team, as: 'teamAway', attributes: ['teamName'] },
         ],
       });
 
       return matches;
     }
     const matches = await this.model.findAll({
-      include: [{ model: Team, as: 'teamHome', attributes: ['teamName'] },
-        { model: Team, as: 'teamAway', attributes: ['teamName'] },
+      include: [{ model: P.Team, as: 'teamHome', attributes: ['teamName'] },
+        { model: P.Team, as: 'teamAway', attributes: ['teamName'] },
       ],
     });
 
     return matches;
   }
 
-  async update(updateMatchData: UpdateMatchModel): Promise<number> {
+  async update(updateMatchData: P.UpdateMatchModel): Promise<number> {
     const id = Number(updateMatchData.id);
     const updateInfo = {
       homeTeamGoals: Number(updateMatchData.homeTeamGoals),

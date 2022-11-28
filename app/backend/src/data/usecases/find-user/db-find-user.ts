@@ -1,8 +1,4 @@
-import {
-  FindUser,
-  UserModel,
-  FindUserRepository,
-} from './db-find-user-protocols';
+import { FindUser, UserModel, FindUserRepository } from './db-find-user-protocols';
 
 export default class DbFindUser implements FindUser {
   constructor(

@@ -1,6 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken';
-import { AddMatch } from '../../../domain/usecases/add-match';
-import MissingParamError, {
+import {
+  MissingParamError,
   InvalidParamError,
   InvalidTokenError,
   MissingTokenError,
@@ -14,13 +14,14 @@ import {
   notFound,
   created,
 } from '../../helpers/http-helpers';
-import { FindTeam } from '../team/get-teams-protocols';
 import {
   Controller,
   TokenValidator,
   HttpRequest,
   HttpResponse,
   AddMatchReqBody,
+  FindTeam,
+  AddMatch,
 } from './match-protocols';
 
 export default class AddMatchController implements Controller {

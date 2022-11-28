@@ -1,5 +1,5 @@
 import SignInController from '../../../src/presentation/controllers/sign-in/signin-controller';
-import MissingParamError, { InvalidParamError, ServerError } from '../../../src/presentation/errors';
+import { MissingParamError, InvalidParamError, ServerError } from '../../../src/presentation/errors';
 import { EmailValidator, FindUser, TokenGenerator } from '../../../src/presentation/controllers/sign-in/signin-protocols';
 import { UserModel } from '../../../src/domain/models/user';
 import UserModelMock from '../../mocks/user-model-mock';

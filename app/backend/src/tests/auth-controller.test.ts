@@ -74,7 +74,7 @@ describe('AuthenticationController', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(401);
     expect(chaiHttpResponse.body)
-      .to.be.deep.equal({ message: new InvalidTokenError().message});
+      .to.be.deep.equal({ message: new InvalidTokenError().message });
   });
 
   it('Should return server error if FindUser throws', async () => {
@@ -87,7 +87,7 @@ describe('AuthenticationController', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(500);
     expect(chaiHttpResponse.body)
-      .to.be.deep.equal({ message: new ServerError().message});
+      .to.be.deep.equal({ message: new ServerError().message });
   });
 
   it('Should return user role on success', async () => {

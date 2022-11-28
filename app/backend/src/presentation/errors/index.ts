@@ -4,9 +4,8 @@ import ServerError from './server-error';
 import MissingTokenError from './missing-token-error';
 import InvalidTokenError from './invalid-token-error';
 
-export default MissingParamError;
-
 export {
+  MissingParamError,
   InvalidParamError,
   ServerError,
   MissingTokenError,

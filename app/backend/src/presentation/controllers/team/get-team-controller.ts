@@ -1,7 +1,6 @@
 import { InvalidParamError, ServerError } from '../../errors';
 import { notFound, ok, serverError } from '../../helpers/http-helpers';
-import { HttpRequest, HttpResponse } from '../sign-in/signin-protocols';
-import { Controller, FindTeam } from './get-teams-protocols';
+import { HttpRequest, HttpResponse, Controller, FindTeam } from './get-teams-protocols';
 
 export default class GetTeamController implements Controller {
   constructor(private findTeam: FindTeam) {}

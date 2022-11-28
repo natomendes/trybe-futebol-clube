@@ -1,6 +1,4 @@
-import { UserModel } from '../../../domain/models/user';
-import User from '../../../database/models/User';
-import { FindUserRepository } from '../../../data/protocols/find-user-repository';
+import { User, UserModel, FindUserRepository } from './user-repository-protocol';
 
 export default class UserRepository implements FindUserRepository {
   constructor(private model = User) {}
