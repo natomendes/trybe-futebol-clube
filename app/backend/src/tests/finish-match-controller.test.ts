@@ -16,11 +16,6 @@ const { expect } = chai;
 describe('GetTeamsController', () => {
   let chaiHttpResponse: Response;
 
-  beforeEach(async () => {
-    // sinon.stub(Match, 'create')
-    //   .resolves(matchMock as Match);
-  })
-
   afterEach(()=>{
     sinon.restore();
   });
