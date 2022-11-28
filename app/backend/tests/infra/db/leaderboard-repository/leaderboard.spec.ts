@@ -7,8 +7,17 @@ describe('LeaderboardRepository', () => {
     const sut = new LeaderboardRepository();
     jest.spyOn(Team, 'findAll')
       .mockResolvedValueOnce(homeTeamDbResult as any[]);
-      
+
     const homeTeamSearch = await sut.findHomeMatches();
     expect(homeTeamSearch).toEqual(homeTeamDbResult);
-  })
+  });
+
+  it('Should throw if Team.findAll throws', async () => {
+    const sut = new LeaderboardRepository();
+    jest.spyOn(Team, 'findAll')
+      .mockRejectedValueOnce(new Error());
+
+    const promise = sut.findHomeMatches();
+    await expect(promise).rejects.toThrow();
+  });
 });
