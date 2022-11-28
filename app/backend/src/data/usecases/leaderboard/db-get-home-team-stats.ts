@@ -2,16 +2,18 @@ import {
   GetHomeTeamStats,
   StatsModel,
   GetHomeTeamStatsRepository,
+  HomeStats,
 } from './db-leaderboard-protocols';
-import homeStatsMock from './mockProvisory';
 
 export default class DbGetHomeTeamStats implements GetHomeTeamStats {
   constructor(
     private readonly getHomeTeamStatsRepo: GetHomeTeamStatsRepository,
+    private readonly homeStats: HomeStats,
   ) {}
 
   async handle(): Promise<StatsModel[]> {
-    await this.getHomeTeamStatsRepo.findAll();
-    return homeStatsMock;
+    const teamsSearch = await this.getHomeTeamStatsRepo.findAll();
+    const homeStats = this.homeStats.calculate(teamsSearch);
+    return homeStats;
   }
 }
