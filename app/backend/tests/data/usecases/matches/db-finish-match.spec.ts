@@ -39,4 +39,10 @@ describe('DbFinishMatch', () => {
     const promise = sut.finish('valid_id');
     await expect(promise).rejects.toThrow();
   });
+
+  it('Should return the number of affected rows on success', async () => {
+    const { sut } = makeSut();
+    const affectedRows = await sut.finish('valid_id');
+    expect(affectedRows).toBe(1);
+  });
 });
