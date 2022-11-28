@@ -36,5 +36,13 @@ describe('HomeTeamStatsController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual({ message: 'Internal server error'});
-  })
+  });
+
+  it('Should return homeTeam stats order by total points on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {};
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual(homeStatsMock);
+  });
 });
