@@ -86,6 +86,18 @@ describe('MatchRepository', () => {
       expect(affectedRows).toBe(1);
     });
   });
+  describe('finish method', () => {
+    it('Should call Match.update with correct value', async () => {
+      const sut = new MatchRepository();
+      const createSpy = jest.spyOn(Match, 'update');
+      await sut.finish('1');
+      expect(createSpy).toHaveBeenCalledWith({
+        inProgress: false,
+      }, {
+        where: { id: 1 }
+      });
+    });  });
+  
   
   
 });
