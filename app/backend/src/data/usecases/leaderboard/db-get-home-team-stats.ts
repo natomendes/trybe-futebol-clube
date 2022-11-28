@@ -7,12 +7,12 @@ import {
 
 export default class DbGetHomeTeamStats implements GetHomeTeamStats {
   constructor(
-    private readonly getHomeTeamStatsRepo: GetHomeMatches,
+    private readonly getHomeMatchesRepo: GetHomeMatches,
     private readonly homeStats: HomeStats,
   ) {}
 
   async handle(): Promise<StatsModel[]> {
-    const teamsSearch = await this.getHomeTeamStatsRepo.findHomeMatches();
+    const teamsSearch = await this.getHomeMatchesRepo.findHomeMatches();
     const homeStats = this.homeStats.calculate(teamsSearch);
     return homeStats;
   }
