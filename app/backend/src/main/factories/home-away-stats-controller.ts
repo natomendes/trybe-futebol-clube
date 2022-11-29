@@ -1,5 +1,5 @@
 import TeamRepository from '../../infra/db/team-repository/team';
-import DbGetTeamsStats from '../../data/usecases/teams/db-get-home-team-stats';
+import DbGetTeamsStats from '../../data/usecases/teams/db-get-teams-stats';
 import
 HomeAwayStatsController
   from '../../presentation/controllers/leaderboard/home-away-stats-controller';

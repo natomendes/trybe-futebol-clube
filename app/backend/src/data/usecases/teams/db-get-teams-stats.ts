@@ -13,7 +13,9 @@ export default class DbGetTeamsStats implements GetTeamsStats {
 
   async handle(path: string): Promise<StatsModel[]> {
     const teamsSearch = await this.getTeamsMatchesRepo.findMatches(path);
-    const teamStats = this.teamStats.calculateHome(teamsSearch);
+    const teamStats = path === 'home'
+      ? this.teamStats.calculateHome(teamsSearch)
+      : this.teamStats.calculateAway(teamsSearch);
     return teamStats;
   }
 }
