@@ -4,4 +4,5 @@ import makeHomeAwayStatsController from '../factories/home-away-stats-controller
 
 export default (router: Router): void => {
   router.get('/leaderboard/home', adaptRoute(makeHomeAwayStatsController()));
+  router.get('/leaderboard/away', adaptRoute(makeHomeAwayStatsController()));
 };

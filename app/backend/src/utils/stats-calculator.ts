@@ -24,8 +24,8 @@ export default class StatsCalculator implements TeamStats {
 
   map({ homeTeamGoals, awayTeamGoals }: MatchModel, type: string): void {
     const result = type === 'away'
-      ? homeTeamGoals - awayTeamGoals
-      : awayTeamGoals - homeTeamGoals;
+      ? awayTeamGoals - homeTeamGoals
+      : homeTeamGoals - awayTeamGoals;
     if (result > 0) {
       this.stats.totalPoints += 3;
       this.stats.totalVictories += 1;
@@ -36,8 +36,8 @@ export default class StatsCalculator implements TeamStats {
       this.stats.totalPoints += 1;
     }
     this.stats.goalsBalance += result;
-    this.stats.goalsFavor += homeTeamGoals;
-    this.stats.goalsOwn += awayTeamGoals;
+    this.stats.goalsFavor += type === 'away' ? awayTeamGoals : homeTeamGoals;
+    this.stats.goalsOwn += type === 'away' ? homeTeamGoals : awayTeamGoals;
     const efficiency = ((this.stats.totalPoints / (this.stats.totalGames * 3)) * 100).toFixed(2);
     this.stats.efficiency = efficiency;
   }
