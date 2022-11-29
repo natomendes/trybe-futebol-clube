@@ -1,5 +1,6 @@
-import { StatsModel, TeamModel } from '../../models';
+import Team from '../../../database/models/Team';
+import { StatsModel } from '../../models';
 
 export interface HomeStats {
-  calculate(teamsData: TeamModel[]): StatsModel[]
+  calculate(teamsData: Team[]): StatsModel[]
 }

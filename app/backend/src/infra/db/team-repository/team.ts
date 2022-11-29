@@ -16,7 +16,7 @@ export default class TeamRepository implements
 
   async findHomeMatches(): Promise<P.Team[]> {
     const homeMatches = await this.model.findAll({
-      include: [{ model: P.Match, as: 'teamAway', where: { inProgress: false } }],
+      include: [{ model: P.Match, as: 'teamHome', where: { inProgress: false } }],
     });
 
     return homeMatches;
