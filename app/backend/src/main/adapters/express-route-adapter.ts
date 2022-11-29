@@ -6,7 +6,10 @@ const adaptRoute = (controller: Controller) => async (req: Request, res: Respons
     headers: req.headers,
     params: req.params,
     query: req.query,
-    body: req.body,
+    body: {
+      ...req.body,
+      path: req.path.slice(1),
+    },
   };
 
   const httpResponse = await controller.handle(httpRequest);

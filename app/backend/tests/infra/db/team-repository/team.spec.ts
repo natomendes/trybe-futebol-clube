@@ -48,13 +48,13 @@ describe('TeamRepository', () => {
     });
   });
   
-  describe('findHomeMatches method', () => {
+  describe('findMatches method', () => {
     it('Should return all teams with home matches on success', async () => {
       const sut = new TeamRepository();
       jest.spyOn(Team, 'findAll')
         .mockResolvedValueOnce(homeTeamDbResult as any[]);
   
-      const homeTeamSearch = await sut.findHomeMatches();
+      const homeTeamSearch = await sut.findMatches('home');
       expect(homeTeamSearch).toEqual(homeTeamDbResult);
     });
   });

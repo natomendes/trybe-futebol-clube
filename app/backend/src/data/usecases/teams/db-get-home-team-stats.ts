@@ -1,19 +1,19 @@
 import {
-  GetHomeTeamStats,
+  GetTeamsStats,
   StatsModel,
-  GetHomeMatchesRepository,
-  HomeStats,
+  GetTeamsMatchesRepository,
+  TeamStats,
 } from './find-teams-protocols';
 
-export default class DbGetHomeTeamStats implements GetHomeTeamStats {
+export default class DbGetTeamsStats implements GetTeamsStats {
   constructor(
-    private readonly getHomeMatchesRepo: GetHomeMatchesRepository,
-    private readonly homeStats: HomeStats,
+    private readonly getTeamsMatchesRepo: GetTeamsMatchesRepository,
+    private readonly teamStats: TeamStats,
   ) {}
 
-  async handle(): Promise<StatsModel[]> {
-    const teamsSearch = await this.getHomeMatchesRepo.findHomeMatches();
-    const homeStats = this.homeStats.calculateHome(teamsSearch);
-    return homeStats;
+  async handle(path: string): Promise<StatsModel[]> {
+    const teamsSearch = await this.getTeamsMatchesRepo.findMatches(path);
+    const teamStats = this.teamStats.calculateHome(teamsSearch);
+    return teamStats;
   }
 }

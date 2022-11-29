@@ -1,5 +1,5 @@
 import { StatsModel } from '../../models';
 
-export interface GetHomeTeamStats {
-  handle(): Promise<StatsModel[]>
+export interface GetTeamsStats {
+  handle(path: string): Promise<StatsModel[]>
 }
