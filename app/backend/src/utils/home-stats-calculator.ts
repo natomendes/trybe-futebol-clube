@@ -62,6 +62,7 @@ export default class HomeStatsCalculator implements HomeStats {
   }
 
   calculate(teamsData: TeamModel[]): StatsModel[] {
+    this.teamsStats = [];
     for (let i = 0; i < teamsData.length; i += 1) {
       this.stats.name = teamsData[i].teamName;
       const { teamHome } = teamsData[i];
