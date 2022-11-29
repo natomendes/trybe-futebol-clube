@@ -11,7 +11,7 @@ export default class HomeAwayStatsController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { path } = httpRequest.body;
-      const finalPath = path.split('/')[1];
+      const [,finalPath] = path.split('/');
 
       const teamsStats = await this.getTeamsStats.handle(finalPath as string);
 
