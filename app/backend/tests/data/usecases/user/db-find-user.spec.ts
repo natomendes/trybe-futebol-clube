@@ -1,6 +1,6 @@
-import { UserModel, FindUserRepository } from "../../../../src/data/usecases/find-user/db-find-user-protocols";
+import { UserModel, FindUserRepository } from "../../../../src/data/usecases/user/db-find-user-protocols";
 import UserModelMock from "../../../mocks/user-model-mock"
-import DbFindUser from '../../../../src/data/usecases/find-user/db-find-user'
+import DbFindUser from '../../../../src/data/usecases/user/db-find-user'
 
 const makeFindUserRepository = (): FindUserRepository => {
   class FindUserRepositoryStub implements FindUserRepository {

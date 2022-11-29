@@ -1,5 +1,5 @@
 import { FindTeamsRepository } from '../../../../src/data/protocols/find-teams-repository';
-import DbFindTeams from '../../../../src/data/usecases/find-teams/db-find-teams';
+import DbFindTeams from '../../../../src/data/usecases/teams/db-find-teams';
 import { TeamModel } from '../../../../src/domain/models/team';
 import { getTeamsMock } from '../../../mocks/team-model-mock';
 

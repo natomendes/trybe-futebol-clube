@@ -8,7 +8,7 @@ import Team from '../database/models/Team';
 
 import { Response } from 'superagent';
 import { teamMock } from '../../tests/mocks/team-model-mock'
-import DbFindTeam from '../data/usecases/find-teams/db-find-team'
+import DbFindTeam from '../data/usecases/teams/db-find-team'
 chai.use(chaiHttp);
 
 const { app } = new App();

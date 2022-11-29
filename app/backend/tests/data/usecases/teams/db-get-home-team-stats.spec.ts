@@ -1,7 +1,7 @@
 import { StatsModel, TeamModel } from "../../../../src/domain/models";
 import { homeStatsMock, homeTeamDbResult } from "../../../mocks/leaderboard-model-mock";
 import { GetHomeMatchesRepository } from '../../../../src/data/protocols';
-import DbGetHomeTeamStats from '../../../../src/data/usecases/leaderboard/db-get-home-team-stats';
+import DbGetHomeTeamStats from '../../../../src/data/usecases/teams/db-get-home-team-stats';
 import { HomeStats } from "../../../../src/domain/usecases";
 import Team from "../../../../src/database/models/Team";
 

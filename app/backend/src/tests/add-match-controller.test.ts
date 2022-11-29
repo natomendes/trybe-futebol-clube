@@ -11,7 +11,7 @@ import DbAddMatch from '../data/usecases/matches/db-add-match'
 import JWTAdapter from '../utils/jwt-adapter';
 import { teamMock, teamMock2 } from '../../tests/mocks/team-model-mock';
 import Team from '../database/models/Team';
-import DbFindTeam from '../data/usecases/find-teams/db-find-team';
+import DbFindTeam from '../data/usecases/teams/db-find-team';
 import { TokenExpiredError } from 'jsonwebtoken';
 chai.use(chaiHttp);
 

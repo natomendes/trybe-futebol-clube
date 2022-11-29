@@ -1,6 +1,6 @@
 import JWTAdapter from '../../utils/jwt-adapter';
 import AddMatchController from '../../presentation/controllers/match/add-match-controller';
-import DbFindTeam from '../../data/usecases/find-teams/db-find-team';
+import DbFindTeam from '../../data/usecases/teams/db-find-team';
 import TeamRepository from '../../infra/db/team-repository/team';
 import DbAddMatch from '../../data/usecases/matches/db-add-match';
 import MatchRepository from '../../infra/db/match-repository/match';

@@ -3,7 +3,7 @@ import {
   StatsModel,
   GetHomeMatchesRepository,
   HomeStats,
-} from './db-leaderboard-protocols';
+} from './find-teams-protocols';
 
 export default class DbGetHomeTeamStats implements GetHomeTeamStats {
   constructor(

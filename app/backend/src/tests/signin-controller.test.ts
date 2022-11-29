@@ -9,7 +9,7 @@ import User from '../database/models/User';
 import { Response } from 'superagent';
 import { MissingParamError, InvalidParamError, ServerError } from '../presentation/errors';
 import EmailValidatorAdapter from '../utils/email-validator-adapter';
-import DbFindUser from '../data/usecases/find-user/db-find-user';
+import DbFindUser from '../data/usecases/user/db-find-user';
 import BcryptAdapter from '../infra/criptography/bcrypt-adapter';
 import TokenGeneratorAdapter from '../utils/jwt-adapter'
 

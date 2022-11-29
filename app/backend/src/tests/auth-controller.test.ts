@@ -8,7 +8,7 @@ import User from '../database/models/User';
 
 import { Response } from 'superagent';
 import { InvalidParamError, InvalidTokenError, MissingTokenError, ServerError } from '../presentation/errors';
-import DbFindUser from '../data/usecases/find-user/db-find-user';
+import DbFindUser from '../data/usecases/user/db-find-user';
 import JwtAdapter from '../utils/jwt-adapter';
 import { TokenExpiredError } from 'jsonwebtoken';
 

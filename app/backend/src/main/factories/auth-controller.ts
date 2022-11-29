@@ -1,6 +1,6 @@
 import JWTAdapter from '../../utils/jwt-adapter';
 import AuthenticationController from '../../presentation/controllers/auth/auth-controller';
-import DbFindUser from '../../data/usecases/find-user/db-find-user';
+import DbFindUser from '../../data/usecases/user/db-find-user';
 import UserRepository from '../../infra/db/user-repository/user';
 
 const makeAuthController = (): AuthenticationController => {

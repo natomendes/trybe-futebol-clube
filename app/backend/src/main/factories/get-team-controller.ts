@@ -1,5 +1,5 @@
 import TeamRepository from '../../infra/db/team-repository/team';
-import DbFindTeam from '../../data/usecases/find-teams/db-find-team';
+import DbFindTeam from '../../data/usecases/teams/db-find-team';
 import GetTeamController from '../../presentation/controllers/team/get-team-controller';
 
 const makeGetTeamController = (): GetTeamController => {
