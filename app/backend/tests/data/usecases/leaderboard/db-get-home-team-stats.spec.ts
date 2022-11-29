@@ -1,18 +1,18 @@
 import { StatsModel, TeamModel } from "../../../../src/domain/models";
 import { homeStatsMock, homeTeamDbResult } from "../../../mocks/leaderboard-model-mock";
-import { GetHomeMatches } from '../../../../src/data/protocols';
+import { GetHomeMatchesRepository } from '../../../../src/data/protocols';
 import DbGetHomeTeamStats from '../../../../src/data/usecases/leaderboard/db-get-home-team-stats';
 import { HomeStats } from "../../../../src/domain/usecases";
 import Team from "../../../../src/database/models/Team";
 
-const makeGetHomeMatchesStub = (): GetHomeMatches => {
-  class GetHomeMatchesStub implements GetHomeMatches {
+const makeGetHomeMatchesRepositoryStub = (): GetHomeMatchesRepository => {
+  class GetHomeMatchesRepositoryStub implements GetHomeMatchesRepository {
     async findHomeMatches(): Promise<Team[]> {
       return homeTeamDbResult as any;
     }
   }
 
-  return new GetHomeMatchesStub();
+  return new GetHomeMatchesRepositoryStub();
 }
 
 const makeHomeStatsStub = (): HomeStats => {
@@ -26,28 +26,28 @@ const makeHomeStatsStub = (): HomeStats => {
 
 interface SutTypes {
   sut: DbGetHomeTeamStats,
-  getHomeMatchesStub: GetHomeMatches
+  getHomeMatchesRepositoryStub: GetHomeMatchesRepository
   homeStatsStub: HomeStats
 }
 
 const makeSut = (): SutTypes => {
   const homeStatsStub = makeHomeStatsStub();
-  const getHomeMatchesStub = makeGetHomeMatchesStub();
+  const getHomeMatchesRepositoryStub = makeGetHomeMatchesRepositoryStub();
   const sut = new DbGetHomeTeamStats(
-    getHomeMatchesStub,
+    getHomeMatchesRepositoryStub,
     homeStatsStub
   );
   return {
     sut,
-    getHomeMatchesStub,
+    getHomeMatchesRepositoryStub,
     homeStatsStub
   }
 };
 
 describe('DbGetHomeTeamStats', () => {
-  it('Should throw if GetHomeMatches throws', async () => {
-    const { sut, getHomeMatchesStub } = makeSut();
-    jest.spyOn(getHomeMatchesStub, 'findHomeMatches')
+  it('Should throw if GetHomeMatchesRepository throws', async () => {
+    const { sut, getHomeMatchesRepositoryStub } = makeSut();
+    jest.spyOn(getHomeMatchesRepositoryStub, 'findHomeMatches')
       .mockRejectedValueOnce(new Error());
     const promise = sut.handle();
     await expect(promise).rejects.toThrow();

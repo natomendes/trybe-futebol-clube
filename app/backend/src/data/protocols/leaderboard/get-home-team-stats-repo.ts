@@ -1,5 +1,5 @@
 import Team from '../../../database/models/Team';
 
-export interface GetHomeMatches {
+export interface GetHomeMatchesRepository {
   findHomeMatches(): Promise<Team[]>
 }

@@ -1,5 +1,6 @@
 import Team from '../../../../src/database/models/Team';
 import TeamRepository from '../../../../src/infra/db/team-repository/team';
+import { homeTeamDbResult } from '../../../mocks/leaderboard-model-mock';
 import { getTeamsMock, teamMock } from '../../../mocks/team-model-mock'
 
 describe('TeamRepository', () => {
@@ -47,4 +48,14 @@ describe('TeamRepository', () => {
     });
   });
   
+  describe('findHomeMatches method', () => {
+    it('Should return all teams with home matches on success', async () => {
+      const sut = new TeamRepository();
+      jest.spyOn(Team, 'findAll')
+        .mockResolvedValueOnce(homeTeamDbResult as any[]);
+  
+      const homeTeamSearch = await sut.findHomeMatches();
+      expect(homeTeamSearch).toEqual(homeTeamDbResult);
+    });
+  });
 });

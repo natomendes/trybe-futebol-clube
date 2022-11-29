@@ -1,13 +1,13 @@
 import {
   GetHomeTeamStats,
   StatsModel,
-  GetHomeMatches,
+  GetHomeMatchesRepository,
   HomeStats,
 } from './db-leaderboard-protocols';
 
 export default class DbGetHomeTeamStats implements GetHomeTeamStats {
   constructor(
-    private readonly getHomeMatchesRepo: GetHomeMatches,
+    private readonly getHomeMatchesRepo: GetHomeMatchesRepository,
     private readonly homeStats: HomeStats,
   ) {}
 
