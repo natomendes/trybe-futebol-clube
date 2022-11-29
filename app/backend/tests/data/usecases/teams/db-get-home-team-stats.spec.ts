@@ -17,7 +17,7 @@ const makeGetHomeMatchesRepositoryStub = (): GetHomeMatchesRepository => {
 
 const makeHomeStatsStub = (): HomeStats => {
   class HomeStatsStub implements HomeStats {
-    calculate(teamsData: TeamModel[]): StatsModel[] {
+    calculateHome(teamsData: TeamModel[]): StatsModel[] {
       return homeStatsMock;
     }
   }
@@ -55,7 +55,7 @@ describe('DbGetHomeTeamStats', () => {
 
   it('Should throw if HomeStats throws', async () => {
     const { sut, homeStatsStub } = makeSut();
-    jest.spyOn(homeStatsStub, 'calculate')
+    jest.spyOn(homeStatsStub, 'calculateHome')
       .mockImplementationOnce(() => { throw new Error()});
     const promise = sut.handle();
     await expect(promise).rejects.toThrow();
@@ -63,9 +63,9 @@ describe('DbGetHomeTeamStats', () => {
 
   it('Should call HomeStats with correct values', async () => {
     const { sut, homeStatsStub } = makeSut();
-    const calculateSpy = jest.spyOn(homeStatsStub, 'calculate');
+    const calculateHomeSpy = jest.spyOn(homeStatsStub, 'calculateHome');
     await sut.handle();
-    expect(calculateSpy).toHaveBeenCalledWith(homeTeamDbResult);
+    expect(calculateHomeSpy).toHaveBeenCalledWith(homeTeamDbResult);
   });
 
   it('Should return home teams stats order by points on success', async () => {

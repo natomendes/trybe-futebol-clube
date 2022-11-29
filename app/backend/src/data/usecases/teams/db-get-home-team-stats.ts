@@ -13,7 +13,7 @@ export default class DbGetHomeTeamStats implements GetHomeTeamStats {
 
   async handle(): Promise<StatsModel[]> {
     const teamsSearch = await this.getHomeMatchesRepo.findHomeMatches();
-    const homeStats = this.homeStats.calculate(teamsSearch);
+    const homeStats = this.homeStats.calculateHome(teamsSearch);
     return homeStats;
   }
 }

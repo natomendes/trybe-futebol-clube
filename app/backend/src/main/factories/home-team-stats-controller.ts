@@ -3,11 +3,11 @@ import DbGetHomeTeamStats from '../../data/usecases/teams/db-get-home-team-stats
 import
 HomeTeamStatsController
   from '../../presentation/controllers/leaderboard/home-team-stats-controller';
-import HomeStatsCalculator from '../../utils/home-stats-calculator';
+import StatsCalculator from '../../utils/home-stats-calculator';
 
 const makeHomeTeamStatsController = (): HomeTeamStatsController => {
   const getHomeMatchesRepo = new TeamRepository();
-  const homeStats = new HomeStatsCalculator();
+  const homeStats = new StatsCalculator();
   const getHometeamStats = new DbGetHomeTeamStats(getHomeMatchesRepo, homeStats);
   return new HomeTeamStatsController(getHometeamStats);
 };

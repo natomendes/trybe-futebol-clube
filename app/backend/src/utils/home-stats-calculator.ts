@@ -16,7 +16,7 @@ export const recursiveSort = (objA: StatsModel, objB: StatsModel, index: number)
 export const sortFunction = (a: StatsModel, b: StatsModel): number =>
   recursiveSort(a, b, 0);
 
-export default class HomeStatsCalculator implements HomeStats {
+export default class StatsCalculator implements HomeStats {
   private teamsStats: StatsModel[] = [];
   private stats: StatsModel = {
     name: '',
@@ -64,7 +64,7 @@ export default class HomeStatsCalculator implements HomeStats {
     };
   }
 
-  calculate(teamsData: TeamModel[]): StatsModel[] {
+  calculateHome(teamsData: TeamModel[]): StatsModel[] {
     this.teamsStats = [];
     for (let i = 0; i < teamsData.length; i += 1) {
       this.stats.name = teamsData[i].teamName;
