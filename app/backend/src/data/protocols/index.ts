@@ -5,4 +5,4 @@ export * from './find-teams-repository';
 export * from './find-user-repository';
 export * from './update-match-repository';
 export * from './finish-match-repository';
-export * from './leaderboard/get-home-team-stats-repo';
+export * from './leaderboard/get-teams-stats-repo';
