@@ -22,8 +22,10 @@ export default class StatsCalculator implements TeamStats {
     efficiency: '0.00',
   };
 
-  map({ homeTeamGoals, awayTeamGoals }: MatchModel): void {
-    const result = homeTeamGoals - awayTeamGoals;
+  map({ homeTeamGoals, awayTeamGoals }: MatchModel, type: string): void {
+    const result = type === 'away'
+      ? homeTeamGoals - awayTeamGoals
+      : awayTeamGoals - homeTeamGoals;
     if (result > 0) {
       this.stats.totalPoints += 3;
       this.stats.totalVictories += 1;
@@ -63,7 +65,7 @@ export default class StatsCalculator implements TeamStats {
       if (teamHome) {
         for (let j = 0; j < teamHome.length; j += 1) {
           this.stats.totalGames += 1;
-          this.map(teamHome[j]);
+          this.map(teamHome[j], 'home');
         }
       }
       this.teamsStats.push(this.stats);
@@ -74,7 +76,22 @@ export default class StatsCalculator implements TeamStats {
     return this.teamsStats;
   }
 
-  calculateAway(_teamsData: TeamModel[]): StatsModel[] {
+  calculateAway(teamsData: TeamModel[]): StatsModel[] {
+    this.teamsStats = [];
+    for (let i = 0; i < teamsData.length; i += 1) {
+      this.stats.name = teamsData[i].teamName;
+      const { teamAway } = teamsData[i];
+      if (teamAway) {
+        for (let j = 0; j < teamAway.length; j += 1) {
+          this.stats.totalGames += 1;
+          this.map(teamAway[j], 'away');
+        }
+      }
+      this.teamsStats.push(this.stats);
+      this.resetStats();
+    }
+    this.teamsStats.sort(sortFunction);
+
     return this.teamsStats;
   }
 }
