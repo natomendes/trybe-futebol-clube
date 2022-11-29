@@ -1,21 +1,20 @@
 import { MatchModel, StatsModel, TeamModel } from '../domain/models';
 import { HomeStats } from '../domain/usecases';
 
-const sortFunction = (a: StatsModel, b: StatsModel): number => {
-  if (a.totalPoints === b.totalPoints) {
-    if (b.totalVictories === a.totalVictories) {
-      if (b.goalsBalance === a.goalsBalance) {
-        if (b.goalsFavor === a.goalsFavor) {
-          return b.goalsOwn - a.goalsOwn;
-        }
-        return b.goalsFavor - a.goalsFavor;
-      }
-      return b.goalsBalance - a.goalsBalance;
-    }
-    return b.totalVictories - a.totalVictories;
+const recursiveSort = (objA: StatsModel, objB: StatsModel, index: number) => {
+  const comparisonOder = [
+    'totalPoints', 'totalVictories', 'goalsBalance', 'goalsFavor', 'goalsOwn'];
+  const firstValue = objA[comparisonOder[index] as keyof StatsModel] as number;
+  const secondValue = objB[comparisonOder[index] as keyof StatsModel] as number;
+  if (secondValue === firstValue && index < comparisonOder.length) {
+    const next = index + 1;
+    recursiveSort(objA, objB, next);
   }
-  return b.totalPoints - a.totalPoints;
+  return secondValue - firstValue;
 };
+
+const sortFunction = (a: StatsModel, b: StatsModel): number =>
+  recursiveSort(a, b, 0);
 
 export default class HomeStatsCalculator implements HomeStats {
   private teamsStats: StatsModel[] = [];
