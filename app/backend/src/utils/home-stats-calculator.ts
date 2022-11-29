@@ -1,10 +1,25 @@
 import { MatchModel, StatsModel, TeamModel } from '../domain/models';
 import { HomeStats } from '../domain/usecases';
-import StatsSorter from './stats-sorter';
+
+export const recursiveSort = (objA: StatsModel, objB: StatsModel, index: number) => {
+  const comparisonOder = [
+    'totalPoints', 'totalVictories', 'goalsBalance', 'goalsFavor', 'goalsOwn'];
+  const firstValue = objA[comparisonOder[index] as keyof StatsModel] as number;
+  const secondValue = objB[comparisonOder[index] as keyof StatsModel] as number;
+  if (secondValue === firstValue && index < comparisonOder.length) {
+    const next = index + 1;
+    recursiveSort(objA, objB, next);
+  }
+  return secondValue - firstValue;
+};
+
+export const sortFunction = (a: StatsModel, b: StatsModel): number =>
+  recursiveSort(a, b, 0);
 
 export default class HomeStatsCalculator implements HomeStats {
   private teamsStats: StatsModel[] = [];
-  private stats: StatsModel = { name: '',
+  private stats: StatsModel = {
+    name: '',
     totalPoints: 0,
     totalGames: 0,
     totalVictories: 0,
@@ -13,7 +28,8 @@ export default class HomeStatsCalculator implements HomeStats {
     goalsFavor: 0,
     goalsOwn: 0,
     goalsBalance: 0,
-    efficiency: '0.00' };
+    efficiency: '0.00',
+  };
 
   map({ homeTeamGoals, awayTeamGoals }: MatchModel): void {
     const result = homeTeamGoals - awayTeamGoals;
@@ -34,7 +50,8 @@ export default class HomeStatsCalculator implements HomeStats {
   }
 
   resetStats(): void {
-    this.stats = { name: '',
+    this.stats = {
+      name: '',
       totalPoints: 0,
       totalGames: 0,
       totalVictories: 0,
@@ -43,7 +60,8 @@ export default class HomeStatsCalculator implements HomeStats {
       goalsFavor: 0,
       goalsOwn: 0,
       goalsBalance: 0,
-      efficiency: '0.00' };
+      efficiency: '0.00',
+    };
   }
 
   calculate(teamsData: TeamModel[]): StatsModel[] {
@@ -60,7 +78,7 @@ export default class HomeStatsCalculator implements HomeStats {
       this.teamsStats.push(this.stats);
       this.resetStats();
     }
-    this.teamsStats = StatsSorter.sort(this.teamsStats);
+    this.teamsStats.sort(sortFunction);
 
     return this.teamsStats;
   }
