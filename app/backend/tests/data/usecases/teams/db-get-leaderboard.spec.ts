@@ -38,4 +38,11 @@ describe('DbGetLeaderboard', () => {
     await sut.handle();
     expect(handleSpy).toHaveBeenNthCalledWith(1, 'home');
   });
+
+  it('Should call DbGetTeamsStats with "away" argument on the second call', async () => {
+    const { sut, getTeamsStatsStub } = makeSut();
+    const handleSpy = jest.spyOn(getTeamsStatsStub, 'handle');
+    await sut.handle();
+    expect(handleSpy).toHaveBeenNthCalledWith(2, 'away');
+  });
 });
