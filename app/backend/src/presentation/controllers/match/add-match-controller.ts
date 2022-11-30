@@ -1,6 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
 import {
-  MissingParamError,
   InvalidParamError,
   InvalidTokenError,
   MissingTokenError,
@@ -65,8 +64,8 @@ export default class AddMatchController implements Controller {
     try {
       if (!this.validateToken(authorization)) return badRequest(new MissingTokenError());
 
-      const areParamsValid = this.validateParams(body);
-      if (!areParamsValid) return badRequest(new MissingParamError('Invalid request body'));
+      // const areParamsValid = this.validateParams(body);
+      // if (!areParamsValid) return badRequest(new MissingParamError('Invalid request body'));
 
       const { homeTeam, awayTeam } = body;
       if (homeTeam === awayTeam) return unprocessableEntity(new InvalidParamError(this.sameTeam));
