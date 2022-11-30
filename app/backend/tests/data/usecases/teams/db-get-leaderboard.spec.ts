@@ -65,9 +65,17 @@ describe('DbGetLeaderboard', () => {
     expect(handleSpy).toHaveBeenCalledWith(homeStatsMock, awayStatsMock);
   });
 
-  it('Should throw if  GetLeaderboardStats throws', async () => {
+  it('Should throw if GetLeaderboardStats throws', async () => {
     const { sut, getLeaderboardStatsStub } = makeSut();
     jest.spyOn(getLeaderboardStatsStub, 'handle')
+      .mockRejectedValueOnce(new Error());
+    const promise = sut.handle()
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('Should throw if GetTeamsStats throws', async () => {
+    const { sut, getTeamsStatsStub } = makeSut();
+    jest.spyOn(getTeamsStatsStub, 'handle')
       .mockRejectedValueOnce(new Error());
     const promise = sut.handle()
     await expect(promise).rejects.toThrow();
