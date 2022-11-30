@@ -1,12 +1,20 @@
-import { StatsModel } from '../matches/match-protocols';
-import { GetLeaderboard, GetTeamsStats } from './find-teams-protocols';
+import {
+  GetLeaderboard,
+  GetTeamsStats,
+  GetLeaderboardStats,
+  StatsModel,
+} from './find-teams-protocols';
 
 export default class DbGetLeaderboard implements GetLeaderboard {
-  constructor(private readonly getTeamStats: GetTeamsStats) {}
+  constructor(
+    private readonly getTeamStats: GetTeamsStats,
+    private readonly getLeaderboardStats: GetLeaderboardStats,
+  ) {}
 
   async handle(): Promise<StatsModel[]> {
     const homeTeamsStats = await this.getTeamStats.handle('home');
-    await this.getTeamStats.handle('away');
+    const awayTeamsStats = await this.getTeamStats.handle('away');
+    await this.getLeaderboardStats.handle(homeTeamsStats, awayTeamsStats);
 
     return homeTeamsStats;
   }

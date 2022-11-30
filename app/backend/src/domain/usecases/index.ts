@@ -7,3 +7,4 @@ export * from './finish-match';
 export * from './leaderboard/get-home-team-stats';
 export * from './leaderboard/home-stats';
 export * from './leaderboard/get-leaderboard';
+export * from './leaderboard/get-leaderboard-stats';
