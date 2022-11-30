@@ -80,4 +80,10 @@ describe('DbGetLeaderboard', () => {
     const promise = sut.handle()
     await expect(promise).rejects.toThrow();
   });
+
+  it('Should return the leaderboard on success', async () => {
+    const { sut } = makeSut();
+    const leaderboard = await sut.handle()
+    expect(leaderboard).toEqual(leaderboardMock);
+  });
 });
