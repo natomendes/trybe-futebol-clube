@@ -34,7 +34,7 @@ describe('HomeAwayStatsController', () => {
       .mockRejectedValueOnce(new Error());
     const httpRequest = {
       body: {
-        path: 'home'
+        path: 'leaderboard/home'
       }
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -46,7 +46,7 @@ describe('HomeAwayStatsController', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        path: 'home'
+        path: 'leaderboard/home'
       }
     };
     const httpResponse = await sut.handle(httpRequest);
