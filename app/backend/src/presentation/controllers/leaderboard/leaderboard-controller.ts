@@ -5,6 +5,7 @@ import { Controller, GetLeaderboard } from './leaderboard-protocols';
 
 export default class LeaderboardController implements Controller {
   constructor(private readonly getLeaderBoard: GetLeaderboard) {}
+
   async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const leaderboard = await this.getLeaderBoard.handle();
