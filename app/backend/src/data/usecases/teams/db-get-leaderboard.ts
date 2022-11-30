@@ -5,7 +5,9 @@ export default class DbGetLeaderboard implements GetLeaderboard {
   constructor(private readonly getTeamStats: GetTeamsStats) {}
 
   async handle(): Promise<StatsModel[]> {
-    const homeTeamsStats = this.getTeamStats.handle('home');
+    const homeTeamsStats = await this.getTeamStats.handle('home');
+    await this.getTeamStats.handle('away');
+
     return homeTeamsStats;
   }
 }
