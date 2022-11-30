@@ -89,33 +89,33 @@ describe('AddMatchController', () => {
       expect(httpResponse.body).toEqual({ message: 'Token must be a valid token' });
     });
 
-    // it('Should return bad request if homeTeam is not provided', async () => {
-    //   const { sut } = makeSut();
-    //   const httpResponse = await sut.handle(missingHomeTeamParamHttpRequest);
-    //   expect(httpResponse.statusCode).toBe(400);
-    //   expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
-    // });
+    it('Should return bad request if homeTeam is not provided', async () => {
+      const { sut } = makeSut();
+      const httpResponse = await sut.handle(missingHomeTeamParamHttpRequest);
+      expect(httpResponse.statusCode).toBe(400);
+      expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
+    });
 
-    // it('Should return bad request if awayTeam is not provided', async () => {
-    //   const { sut } = makeSut();
-    //   const httpResponse = await sut.handle(missingAwayTeamParamHttpRequest);
-    //   expect(httpResponse.statusCode).toBe(400);
-    //   expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
-    // });
+    it('Should return bad request if awayTeam is not provided', async () => {
+      const { sut } = makeSut();
+      const httpResponse = await sut.handle(missingAwayTeamParamHttpRequest);
+      expect(httpResponse.statusCode).toBe(400);
+      expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
+    });
 
-    // it('Should return bad request if homeTeamGoals is not provided', async () => {
-    //   const { sut } = makeSut();
-    //   const httpResponse = await sut.handle(missingHomeTeamGoalsParamHttpRequest);
-    //   expect(httpResponse.statusCode).toBe(400);
-    //   expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
-    // });
+    it('Should return bad request if homeTeamGoals is not provided', async () => {
+      const { sut } = makeSut();
+      const httpResponse = await sut.handle(missingHomeTeamGoalsParamHttpRequest);
+      expect(httpResponse.statusCode).toBe(400);
+      expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
+    });
 
-    // it('Should return bad request if awayTeamGoals is not provided', async () => {
-    //   const { sut } = makeSut();
-    //   const httpResponse = await sut.handle(missingAwayTeamGoalsParamHttpRequest);
-    //   expect(httpResponse.statusCode).toBe(400);
-    //   expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
-    // });
+    it('Should return bad request if awayTeamGoals is not provided', async () => {
+      const { sut } = makeSut();
+      const httpResponse = await sut.handle(missingAwayTeamGoalsParamHttpRequest);
+      expect(httpResponse.statusCode).toBe(400);
+      expect(httpResponse.body).toEqual({ message: 'Invalid request body' });
+    });
   });
 
   describe('Match information validation', () => {
