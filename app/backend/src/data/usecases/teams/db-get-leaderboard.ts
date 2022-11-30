@@ -14,8 +14,8 @@ export default class DbGetLeaderboard implements GetLeaderboard {
   async handle(): Promise<StatsModel[]> {
     const homeTeamsStats = await this.getTeamStats.handle('home');
     const awayTeamsStats = await this.getTeamStats.handle('away');
-    await this.getLeaderboardStats.handle(homeTeamsStats, awayTeamsStats);
+    const leaderboard = await this.getLeaderboardStats.handle(homeTeamsStats, awayTeamsStats);
 
-    return homeTeamsStats;
+    return leaderboard;
   }
 }
