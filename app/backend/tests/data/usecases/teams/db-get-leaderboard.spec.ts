@@ -64,4 +64,12 @@ describe('DbGetLeaderboard', () => {
     await sut.handle()
     expect(handleSpy).toHaveBeenCalledWith(homeStatsMock, awayStatsMock);
   });
+
+  it('Should throw if  GetLeaderboardStats throws', async () => {
+    const { sut, getLeaderboardStatsStub } = makeSut();
+    jest.spyOn(getLeaderboardStatsStub, 'handle')
+      .mockRejectedValueOnce(new Error());
+    const promise = sut.handle()
+    await expect(promise).rejects.toThrow();
+  });
 });
