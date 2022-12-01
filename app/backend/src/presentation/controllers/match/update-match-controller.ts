@@ -10,7 +10,7 @@ export default class UpdateMatchController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       for (let i = 0; i < this.requiredFields.length; i += 1) {
-        if (!httpRequest?.body?.[this.requiredFields[i]]) {
+        if (!httpRequest.body[this.requiredFields[i]]) {
           return badRequest(new MissingParamError('Invalid request body'));
         }
       }

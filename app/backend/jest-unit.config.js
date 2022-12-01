@@ -7,7 +7,13 @@ module.exports = {
   coverageProvider: 'v8',
   testEnvironment: 'jest-environment-node',
   transform: {
-    '.+\\.ts$': 'ts-jest',
+    '.+\\.ts$': [
+      'ts-jest', {
+        sourceMaps: true,
+        module: {
+          type: 'commonjs',
+        },
+      }],
   },
   roots: ['<rootDir>/tests'],
   testMatch: ['**/*.spec.ts'],

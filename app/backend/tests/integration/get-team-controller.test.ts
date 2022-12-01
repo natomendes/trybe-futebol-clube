@@ -47,7 +47,7 @@ describe('GetTeamController', () => {
   });
   
   it('Should return all teams on success', async () => {
-    sinon.stub(Team, "findOne").resolves(teamMock as Team);
+    sinon.stub(Team, "findOne").resolves(teamMock as any);
     chaiHttpResponse = await chai
        .request(app)
        .get('/teams/1')

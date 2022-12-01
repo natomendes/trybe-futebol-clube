@@ -10,7 +10,7 @@ export default class AuthenticationController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!httpRequest?.headers?.authorization) return badRequest(new MissingTokenError());
+      if (!httpRequest.headers.authorization) return badRequest(new MissingTokenError());
       const { authorization } = httpRequest.headers;
       const { email } = this.tokenValidator.validate(authorization);
       const user = await this.findUser.find(email);

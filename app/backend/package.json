@@ -15,7 +15,7 @@
     "dev": "nodemon --watch \"./src/**\" ./src/server.ts",
     "test:std": "jest --passWithNoTests --silent --runInBand --no-cache",
     "test:unit": "npm run test:std -- -c jest-unit.config.js --watch",
-    "test:integration": "nyc --reporter=html mocha -r ts-node/register ./tests/integration/**.test.ts -t 10000 --no-cache --exit",
+    "test:integration": "nyc --reporter=html --reporter=text mocha -r ts-node/register ./tests/integration/**.test.ts -t 10000 --no-cache --exit",
     "test:staged": "npm run test:std -- --findRelatedTests",
     "test:std:coverage": "npm run test:std -- --coverage"
   },

@@ -7,7 +7,7 @@ import App from '../../src/app';
 
 import { Response } from 'superagent';
 import DbGetTeamsStats from '../../src/data/usecases/teams/db-get-teams-stats';
-import { homeStatsMock, awayStatsMock, leaderboardMock } from '../mocks/leaderboard-model-mock';
+import { homeStatsMock, awayStatsMock, leaderboardMock, missingTeamHomeStatsMock } from '../mocks/leaderboard-model-mock';
 chai.use(chaiHttp);
 
 const { app } = new App();
@@ -33,7 +33,7 @@ describe('LeaderboardController', () => {
       .to.be.deep.equal({ message: 'Internal server error'});
   });
   
-  it('Should return homeTeams stats on success', async () => {
+  it('Should return leaderboard stats on success', async () => {
     sinon.stub(DbGetTeamsStats.prototype, 'handle')
       .onFirstCall().resolves(homeStatsMock as any)
       .onSecondCall().resolves(awayStatsMock as any[]);
@@ -46,5 +46,16 @@ describe('LeaderboardController', () => {
     expect(chaiHttpResponse.body)
       .to.be.deep.equal(leaderboardMock);
   });
-});
+  
+  it('Should cover stats when away is smaller', async () => {
+    sinon.stub(DbGetTeamsStats.prototype, 'handle')
+      .onFirstCall().resolves(awayStatsMock as any)
+      .onSecondCall().resolves(missingTeamHomeStatsMock as any[]);
+    chaiHttpResponse = await chai
+       .request(app)
+       .get('/leaderboard')
+       .send();
 
+    expect(chaiHttpResponse.status).to.be.equal(200);
+  });
+});

@@ -14,8 +14,8 @@ export default class GetMatchesController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { query } = httpRequest;
-      const matches = await this.findMatches.find(query?.inProgress);
+      const { inProgress } = httpRequest.query;
+      const matches = await this.findMatches.find(inProgress);
       return ok(matches);
     } catch (error) {
       return serverError(new ServerError());

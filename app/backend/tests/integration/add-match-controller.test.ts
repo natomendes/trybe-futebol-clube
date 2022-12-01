@@ -25,9 +25,9 @@ describe('AddMatchController', () => {
   beforeEach(async () => {
     sinon.stub(Team, 'findOne')
       .onFirstCall()
-      .resolves(teamMock as Team)
+      .resolves(teamMock as any)
       .onSecondCall()
-      .resolves(teamMock2 as Team);
+      .resolves(teamMock2 as any);
     sinon.stub(Match, 'create')
       .resolves(matchMock as Match);
   })

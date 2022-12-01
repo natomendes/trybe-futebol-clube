@@ -62,12 +62,11 @@ export default class StatsCalculator implements TeamStats, GetLeaderboardStats {
     for (let i = 0; i < teamsData.length; i += 1) {
       this.stats.name = teamsData[i].teamName;
       const { teamHome } = teamsData[i];
-      if (teamHome) {
-        for (let j = 0; j < teamHome.length; j += 1) {
-          this.stats.totalGames += 1;
-          this.map(teamHome[j], 'home');
-        }
+      for (let j = 0; j < teamHome.length; j += 1) {
+        this.stats.totalGames += 1;
+        this.map(teamHome[j], 'home');
       }
+
       this.teamsStats.push(this.stats);
       this.resetStats();
     }
@@ -81,12 +80,11 @@ export default class StatsCalculator implements TeamStats, GetLeaderboardStats {
     for (let i = 0; i < teamsData.length; i += 1) {
       this.stats.name = teamsData[i].teamName;
       const { teamAway } = teamsData[i];
-      if (teamAway) {
-        for (let j = 0; j < teamAway.length; j += 1) {
-          this.stats.totalGames += 1;
-          this.map(teamAway[j], 'away');
-        }
+      for (let j = 0; j < teamAway.length; j += 1) {
+        this.stats.totalGames += 1;
+        this.map(teamAway[j], 'away');
       }
+
       this.teamsStats.push(this.stats);
       this.resetStats();
     }

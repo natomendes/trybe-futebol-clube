@@ -8,7 +8,7 @@ import Team from '../../src/database/models/Team';
 
 import { Response } from 'superagent';
 import DbGetTeamsStats from '../../src/data/usecases/teams/db-get-teams-stats';
-import { homeStatsMock, homeTeamDbResult } from '../mocks/leaderboard-model-mock';
+import { awayStatsMock ,homeStatsMock, homeTeamDbResult, awayTeamDbResult, tiedHomeDbResult, tiedHomedStatsMock } from '../mocks/leaderboard-model-mock';
 chai.use(chaiHttp);
 
 const { app } = new App();
@@ -44,6 +44,30 @@ describe('HomeAwayStatsController', () => {
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body)
       .to.be.deep.equal(homeStatsMock);
+  });
+  
+  it('Should return homeTeams stats tied on success', async () => {
+    sinon.stub(Team, "findAll").resolves(tiedHomeDbResult as any[]);
+    chaiHttpResponse = await chai
+       .request(app)
+       .get('/leaderboard/home')
+       .send();
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body)
+      .to.be.deep.equal(tiedHomedStatsMock);
+  });
+  
+  it('Should return awayTeams stats on success', async () => {
+    sinon.stub(Team, "findAll").resolves(awayTeamDbResult as any[]);
+    chaiHttpResponse = await chai
+       .request(app)
+       .get('/leaderboard/away')
+       .send();
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body)
+      .to.be.deep.equal(awayStatsMock);
   });
 });
 

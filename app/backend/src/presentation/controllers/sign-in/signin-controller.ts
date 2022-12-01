@@ -22,7 +22,7 @@ export default class SignInController implements Controller {
     try {
       const requiredFields = ['email', 'password'];
       for (let i = 0; i < requiredFields.length; i += 1) {
-        if (!httpRequest.body?.[requiredFields[i]]) {
+        if (!httpRequest.body[requiredFields[i]]) {
           return badRequest(new MissingParamError());
         }
       }

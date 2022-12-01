@@ -24,7 +24,7 @@ implements
   async findAll(Options?: P.FindAllOptions): Promise<P.Match[]> {
     if (Options) {
       const { inProgress } = Options;
-      const boolInProgress = inProgress?.toLowerCase() === 'true';
+      const boolInProgress = inProgress.toLowerCase() === 'true';
       const matches = await this.model.findAll({
         where: { inProgress: boolInProgress },
         include: [{ model: P.Team, as: 'teamHome', attributes: ['teamName'] },

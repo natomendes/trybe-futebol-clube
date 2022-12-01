@@ -1,7 +1,7 @@
 import Match from '../../database/models/Match';
 
 export interface FindAllOptions {
-  inProgress?: string
+  inProgress: string
 }
 
 export interface FindMatchesRepository {
