@@ -1,17 +1,18 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
+import * as bcrypt from 'bcryptjs';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import User from '../database/models/User';
+import App from '../../src/app';
+import User from '../../src/database/models/User';
 
 import { Response } from 'superagent';
-import { MissingParamError, InvalidParamError, ServerError } from '../presentation/errors';
-import EmailValidatorAdapter from '../utils/email-validator-adapter';
-import DbFindUser from '../data/usecases/user/db-find-user';
-import BcryptAdapter from '../infra/criptography/bcrypt-adapter';
-import TokenGeneratorAdapter from '../utils/jwt-adapter'
+import { MissingParamError, InvalidParamError, ServerError } from '../../src/presentation/errors';
+import EmailValidatorAdapter from '../../src/utils/email-validator-adapter';
+import DbFindUser from '../../src/data/usecases/user/db-find-user';
+import BcryptAdapter from '../../src/infra/criptography/bcrypt-adapter';
+import TokenGeneratorAdapter from '../../src/utils/jwt-adapter'
 
 
 chai.use(chaiHttp);
@@ -35,12 +36,10 @@ describe('SignInController', () => {
   });
 
   afterEach(()=>{
-    (User.findOne as sinon.SinonStub).restore();
     sinon.restore();
   });
   
   it('Should return 400 and and error if no email is provided', async () => {
-
     chaiHttpResponse = await chai
        .request(app)
        .post('/login')
@@ -82,8 +81,7 @@ describe('SignInController', () => {
   });
 
   it('Should return 401 and an error if email provided has no match in the database', async () => {
-    sinon.stub(DbFindUser.prototype, 'find')
-      .resolves(undefined);
+    sinon.stub(DbFindUser.prototype, 'find').resolves(undefined);
     chaiHttpResponse = await chai
        .request(app)
        .post('/login')
@@ -98,7 +96,7 @@ describe('SignInController', () => {
   });
 
   it('Should return 401 and an error if password provided is wrong', async () => {
-    sinon.stub(BcryptAdapter.prototype, 'validate')
+    sinon.stub(bcrypt, 'compare')
       .resolves(false);
     chaiHttpResponse = await chai
        .request(app)

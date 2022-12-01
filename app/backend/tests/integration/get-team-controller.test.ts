@@ -3,19 +3,19 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import Team from '../database/models/Team';
+import App from '../../src/app';
+import Team from '../../src/database/models/Team';
 
 import { Response } from 'superagent';
 import { teamMock } from '../../tests/mocks/team-model-mock'
-import DbFindTeam from '../data/usecases/teams/db-find-team'
+import DbFindTeam from '../../src/data/usecases/teams/db-find-team'
 chai.use(chaiHttp);
 
 const { app } = new App();
 
 const { expect } = chai;
 
-describe('GetTeamsController', () => {
+describe('GetTeamController', () => {
   let chaiHttpResponse: Response;
 
   afterEach(()=>{

@@ -3,12 +3,12 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import Team from '../database/models/Team';
+import App from '../../src/app';
+import Team from '../../src/database/models/Team';
 
 import { Response } from 'superagent';
 import { getTeamsMock } from '../../tests/mocks/team-model-mock'
-import DbFindTeams from '../data/usecases/teams/db-find-teams'
+import DbFindTeams from '../../src/data/usecases/teams/db-find-teams'
 chai.use(chaiHttp);
 
 const { app } = new App();

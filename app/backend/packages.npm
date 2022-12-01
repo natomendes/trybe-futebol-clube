@@ -1,6 +1,0 @@
-git-commit-msg-linter -D
-husky@4 -D
-lint-staged -D
-ts-jest@27.1.4 -D
-@types/jest -D
-fast-glob

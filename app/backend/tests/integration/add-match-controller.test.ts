@@ -3,15 +3,15 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import Match from '../database/models/Match';
+import App from '../../src/app';
+import Match from '../../src/database/models/Match';
 import { Response } from 'superagent';
-import { matchMock, validBodyRequest } from '../../tests/mocks/match-model-mock'
-import DbAddMatch from '../data/usecases/matches/db-add-match'
-import JWTAdapter from '../utils/jwt-adapter';
-import { teamMock, teamMock2 } from '../../tests/mocks/team-model-mock';
-import Team from '../database/models/Team';
-import DbFindTeam from '../data/usecases/teams/db-find-team';
+import { matchMock, validBodyRequest } from '../mocks/match-model-mock'
+import DbAddMatch from '../../src/data/usecases/matches/db-add-match'
+import JWTAdapter from '../../src/utils/jwt-adapter';
+import { teamMock, teamMock2 } from '../mocks/team-model-mock';
+import Team from '../../src/database/models/Team';
+import DbFindTeam from '../../src/data/usecases/teams/db-find-team';
 import { TokenExpiredError } from 'jsonwebtoken';
 chai.use(chaiHttp);
 
@@ -46,6 +46,16 @@ describe('AddMatchController', () => {
     expect(chaiHttpResponse.status).to.be.equal(500);
     expect(chaiHttpResponse.body)
       .to.be.deep.equal({ message: 'Internal server error'});
+  });
+  
+  it('Should return bad request if no token is provided', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .send(validBodyRequest);
+    expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body)
+      .to.be.deep.equal({ message: 'Token is required'});
   });
   
   it('Should return unauthorized if token is invalid', async () => {

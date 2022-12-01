@@ -3,8 +3,8 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import Match from '../database/models/Match';
+import App from '../../src/app';
+import Match from '../../src/database/models/Match';
 import { Response } from 'superagent';
 
 chai.use(chaiHttp);
@@ -13,7 +13,7 @@ const { app } = new App();
 
 const { expect } = chai;
 
-describe('GetTeamsController', () => {
+describe('UpdateMatchController', () => {
   let chaiHttpResponse: Response;
 
   afterEach(()=>{

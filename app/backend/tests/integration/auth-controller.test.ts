@@ -3,13 +3,13 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import User from '../database/models/User';
+import App from '../../src/app';
+import User from '../../src/database/models/User';
 
 import { Response } from 'superagent';
-import { InvalidParamError, InvalidTokenError, MissingTokenError, ServerError } from '../presentation/errors';
-import DbFindUser from '../data/usecases/user/db-find-user';
-import JwtAdapter from '../utils/jwt-adapter';
+import { InvalidParamError, InvalidTokenError, MissingTokenError, ServerError } from '../../src/presentation/errors';
+import DbFindUser from '../../src/data/usecases/user/db-find-user';
+import JwtAdapter from '../../src/utils/jwt-adapter';
 import { TokenExpiredError } from 'jsonwebtoken';
 
 

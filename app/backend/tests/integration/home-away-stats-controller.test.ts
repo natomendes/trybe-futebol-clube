@@ -3,12 +3,12 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import App from '../app';
-import Team from '../database/models/Team';
+import App from '../../src/app';
+import Team from '../../src/database/models/Team';
 
 import { Response } from 'superagent';
-import DbGetTeamsStats from '../data/usecases/teams/db-get-teams-stats';
-import { homeStatsMock, awayStatsMock, leaderboardMock } from './mocks';
+import DbGetTeamsStats from '../../src/data/usecases/teams/db-get-teams-stats';
+import { homeStatsMock, homeTeamDbResult } from '../mocks/leaderboard-model-mock';
 chai.use(chaiHttp);
 
 const { app } = new App();
@@ -26,7 +26,7 @@ describe('HomeAwayStatsController', () => {
     sinon.stub(DbGetTeamsStats.prototype, 'handle').throws();
     chaiHttpResponse = await chai
        .request(app)
-       .get('/leaderboard')
+       .get('/leaderboard/home')
        .send();
 
     expect(chaiHttpResponse.status).to.be.equal(500);
@@ -35,17 +35,15 @@ describe('HomeAwayStatsController', () => {
   });
   
   it('Should return homeTeams stats on success', async () => {
-    sinon.stub(DbGetTeamsStats.prototype, 'handle')
-      .onFirstCall().resolves(homeStatsMock as any)
-      .onSecondCall().resolves(awayStatsMock as any[]);
+    sinon.stub(Team, "findAll").resolves(homeTeamDbResult as any[]);
     chaiHttpResponse = await chai
        .request(app)
-       .get('/leaderboard')
+       .get('/leaderboard/home')
        .send();
 
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body)
-      .to.be.deep.equal(leaderboardMock);
+      .to.be.deep.equal(homeStatsMock);
   });
 });
 
